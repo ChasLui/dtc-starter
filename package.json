@@ -31,7 +31,8 @@
   },
   "overrides": {
     "@types/react": "19.0.5",
-    "@types/react-dom": "19.0.5"
+    "@types/react-dom": "19.0.5",
+    "vite": "^8.2.2"
   },
   "devDependencies": {
     "@medusajs/eslint-plugin": "2.19.0",

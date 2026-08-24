@@ -4,6 +4,8 @@
 
 Medusa DTC Starter — a bun workspace monorepo containing a Medusa backend (`@medusajs/medusa` latest, Node 20+, PostgreSQL 15+) and an optional storefront (TanStack Start on Vite 8 + Rolldown).
 
+**Vite 8 (Rolldown) runs repo-wide.** The backend dev tooling + vitest, the storefront, and even Medusa's admin bundler all resolve `vite@8.x`: the root `package.json` `overrides` entry (`"vite": "^8.2.2"`) forces it, overriding `@medusajs/admin-bundler`'s own `^7.3.6` dep and `@medusajs/admin-vite-plugin`'s peer range (they work on 8 but have not declared it). Never remove that override.
+
 ## Directory Structure
 
 ```text
