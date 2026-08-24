@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useEffect, useActionState } from "react";
+import React, { useActionState, useEffect } from "react";
 
 import Input from "@modules/common/components/input"
 
@@ -24,7 +24,7 @@ const ProfileEmail: React.FC<MyInformationProps> = ({ customer }) => {
     }
 
     try {
-      await updateCustomer(customer)
+      await updateCustomer({ data: customer })
       return { success: true, error: null }
     } catch (error) {
       return { success: false, error: String(error) }

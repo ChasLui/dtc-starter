@@ -1,7 +1,5 @@
-"use server"
-
 import { sdk } from "@lib/config"
-import { getCacheOptions } from "./cookies"
+import { createServerFn } from "@tanstack/react-start"
 
 export type Locale = {
   code: string
@@ -12,17 +10,13 @@ export type Locale = {
  * Fetches available locales from the backend.
  * Returns null if the endpoint returns 404 (locales not configured).
  */
-export const listLocales = async (): Promise<Locale[] | null> => {
-  const next = {
-    ...(await getCacheOptions("locales")),
+export const listLocales = createServerFn({ method: "GET" }).handler(
+  async (): Promise<Locale[] | null> => {
+    return sdk.client
+      .fetch<{ locales: Locale[] }>(`/store/locales`, {
+        method: "GET",
+      })
+      .then(({ locales }) => locales)
+      .catch(() => null)
   }
-
-  return sdk.client
-    .fetch<{ locales: Locale[] }>(`/store/locales`, {
-      method: "GET",
-      next,
-      cache: "force-cache",
-    })
-    .then(({ locales }) => locales)
-    .catch(() => null)
-}
+)

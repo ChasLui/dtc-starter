@@ -48,10 +48,12 @@ const ProfileBillingAddress: React.FC<MyInformationProps> = ({
     initialState.addressId = billingAddress.id
   }
 
-  const [state, formAction] = useActionState(
-    billingAddress ? updateCustomerAddress : addCustomerAddress,
-    initialState
-  )
+  const formActionFn = billingAddress ? updateCustomerAddress : addCustomerAddress
+
+  const action = (state: unknown, formData: FormData) =>
+    formActionFn({ data: formData })
+
+  const [state, formAction] = useActionState(action, initialState)
 
   const clearState = () => {
     setSuccessState(false)

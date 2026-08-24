@@ -4,23 +4,28 @@ import { Text } from "@modules/common/components/ui"
 
 import InteractiveLink from "@modules/common/components/interactive-link"
 import ProductPreview from "@modules/products/components/product-preview"
+import { useServerData } from "@lib/hooks/use-server-data"
 
-export default async function ProductRail({
+export default function ProductRail({
   collection,
   region,
 }: {
   collection: HttpTypes.StoreCollection
   region: HttpTypes.StoreRegion
 }) {
-  const {
-    response: { products: pricedProducts },
-  } = await listProducts({
-    regionId: region.id,
-    queryParams: {
-      collection_id: collection.id,
-      fields: "*variants.calculated_price",
-    },
-  })
+  const { data } = useServerData(() =>
+    listProducts({
+      data: {
+        regionId: region.id,
+        queryParams: {
+          collection_id: collection.id,
+          fields: "*variants.calculated_price",
+        },
+      },
+    })
+  )
+
+  const pricedProducts = data?.response.products
 
   if (!pricedProducts) {
     return null

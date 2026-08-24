@@ -1,5 +1,6 @@
 import { listProducts } from "@lib/data/products"
 import { getRegion } from "@lib/data/regions"
+import { useServerData } from "@lib/hooks/use-server-data"
 import { HttpTypes } from "@medusajs/types"
 import Product from "../product-preview"
 
@@ -8,41 +9,47 @@ type RelatedProductsProps = {
   countryCode: string
 }
 
-export default async function RelatedProducts({
+export default function RelatedProducts({
   product,
   countryCode,
 }: RelatedProductsProps) {
-  const region = await getRegion(countryCode)
+  const { data } = useServerData(async () => {
+    const region = await getRegion({ data: countryCode })
 
-  if (!region) {
-    return null
-  }
+    if (!region) {
+      return null
+    }
 
-  // edit this function to define your related products logic
-  const queryParams: HttpTypes.StoreProductListParams = {}
-  if (region?.id) {
-    queryParams.region_id = region.id
-  }
-  if (product.collection_id) {
-    queryParams.collection_id = [product.collection_id]
-  }
-  if (product.tags) {
-    queryParams.tag_id = product.tags
-      .map((t) => t.id)
-      .filter(Boolean) as string[]
-  }
-  queryParams.is_giftcard = false
+    // edit this function to define your related products logic
+    const queryParams: HttpTypes.StoreProductListParams = {}
+    if (region?.id) {
+      queryParams.region_id = region.id
+    }
+    if (product.collection_id) {
+      queryParams.collection_id = [product.collection_id]
+    }
+    if (product.tags) {
+      queryParams.tag_id = product.tags
+        .map((t) => t.id)
+        .filter(Boolean) as string[]
+    }
+    queryParams.is_giftcard = false
 
-  const products = await listProducts({
-    queryParams,
-    countryCode,
-  }).then(({ response }) => {
-    return response.products.filter(
-      (responseProduct) => responseProduct.id !== product.id
-    )
+    const products = await listProducts({
+      data: {
+        queryParams,
+        countryCode,
+      },
+    }).then(({ response }) => {
+      return response.products.filter(
+        (responseProduct) => responseProduct.id !== product.id
+      )
+    })
+
+    return { products, region }
   })
 
-  if (!products.length) {
+  if (!data || !data.products.length) {
     return null
   }
 
@@ -58,9 +65,9 @@ export default async function RelatedProducts({
       </div>
 
       <ul className="grid grid-cols-2 small:grid-cols-3 medium:grid-cols-4 gap-x-6 gap-y-8">
-        {products.map((product) => (
-          <li key={product.id}>
-            <Product region={region} product={product} />
+        {data.products.map((relatedProduct) => (
+          <li key={relatedProduct.id}>
+            <Product region={data.region} product={relatedProduct} />
           </li>
         ))}
       </ul>

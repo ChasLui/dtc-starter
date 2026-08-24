@@ -40,7 +40,7 @@
 
 # Medusa DTC Starter
 
-A production-ready monorepo starter for direct-to-consumer ecommerce stores powered by Medusa and Next.js. Includes a fully featured storefront with product browsing, cart, checkout, customer accounts, and order management.
+A production-ready monorepo starter for direct-to-consumer ecommerce stores powered by Medusa and TanStack Start. Includes a fully featured storefront with product browsing, cart, checkout, customer accounts, and order management.
 
 ## Features
 
@@ -83,7 +83,7 @@ bun install
 cp apps/backend/.env.template apps/backend/.env
 ```
 
-3. Set the database URL in `apps/backend.env`:
+3. Set the database URL in `apps/backend/.env`:
 
 ```bash
 # Replace with actual database URL, make sure the database exists.

@@ -8,7 +8,7 @@ import {
   Transition,
 } from "@headlessui/react"
 import { Fragment, useEffect, useMemo, useState, useTransition } from "react"
-import { useRouter } from "next/navigation"
+import { useRouter } from "@tanstack/react-router"
 import ReactCountryFlag from "react-country-flag"
 
 import { StateType } from "@lib/hooks/use-toggle-state"
@@ -106,9 +106,9 @@ const LanguageSelect = ({
 
   const handleChange = (option: LanguageOption) => {
     startTransition(async () => {
-      await updateLocale(option.code)
+      await updateLocale({ data: option.code })
       close()
-      router.refresh()
+      router.invalidate()
     })
   }
 
@@ -132,7 +132,7 @@ const LanguageSelect = ({
             {current && (
               <span className="txt-compact-small flex items-center gap-x-2">
                 {current.countryCode && (
-                  /* @ts-ignore */
+                  /* @ts-ignore react-country-flag countryCode prop accepts any string */
                   <ReactCountryFlag
                     svg
                     style={{
@@ -166,7 +166,7 @@ const LanguageSelect = ({
                   className="py-2 hover:bg-gray-200 px-3 cursor-pointer flex items-center gap-x-2"
                 >
                   {o.countryCode ? (
-                    /* @ts-ignore */
+                    /* @ts-ignore react-country-flag countryCode prop accepts any string */
                     <ReactCountryFlag
                       svg
                       style={{

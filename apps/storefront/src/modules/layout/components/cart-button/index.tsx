@@ -1,8 +1,8 @@
-import { retrieveCart } from "@lib/data/cart"
+import { useStorefront } from "@lib/context/storefront-context"
 import CartDropdown from "../cart-dropdown"
 
-export default async function CartButton() {
-  const cart = await retrieveCart().catch(() => null)
+export default function CartButton() {
+  const { cart } = useStorefront()
 
   return <CartDropdown cart={cart} />
 }

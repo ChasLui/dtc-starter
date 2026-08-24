@@ -2,7 +2,7 @@
 
 ## Overview
 
-Medusa DTC Starter — a Turborepo workspace monorepo containing a Medusa backend (`@medusajs/medusa` latest, Node 20+, PostgreSQL 15+) and an optional storefront (Next.js, Tanstack, etc...).
+Medusa DTC Starter — a Turborepo workspace monorepo containing a Medusa backend (`@medusajs/medusa` latest, Node 20+, PostgreSQL 15+) and an optional storefront (TanStack Start).
 
 ## Directory Structure
 
@@ -68,7 +68,7 @@ Run from the repo root unless noted. Turbo skips missing apps automatically.
 ```bash
 <pm> run lint                          # all apps via turbo
 cd apps/backend && <pm> run lint       # medusa lint
-cd apps/storefront && <pm> run lint    # next lint
+cd apps/storefront && <pm> run lint    # eslint
 ```
 
 ### Test (backend only; the storefront has no test suite)
@@ -147,7 +147,7 @@ claude mcp add --transport http medusa https://docs.medusajs.com/mcp # or agent 
 
 ## Off-Limits
 
-- `apps/backend/.medusa/`, `.next/`, `dist/`, `out/`, `.turbo/` — build output, excluded from the workspace and regenerated.
+- `apps/backend/.medusa/`, `.next/`, `.output/`, `dist/`, `out/`, `.turbo/` — build output, excluded from the workspace and regenerated.
 - The lockfile (`bun.lock`, `pnpm-lock.yaml`, `yarn.lock`, `package-lock.json` — whichever this install produced) — never hand-edit or delete; change it only as a side effect of a package manager command.
 - `.env` / `.env.local` — never commit, print, or copy secret values out of them. Edit `.env.template` instead when documenting a new variable.
 - Existing migrations in `src/modules/*/migrations/` — add a new migration rather than rewriting one that may already have run.

@@ -5,6 +5,7 @@ import React from "react"
 import StripeWrapper from "./stripe-wrapper"
 import { HttpTypes } from "@medusajs/types"
 import { isStripeLike } from "@lib/constants"
+import { getEnv } from "@lib/util/env"
 
 type PaymentWrapperProps = {
   cart: HttpTypes.StoreCart
@@ -12,10 +13,10 @@ type PaymentWrapperProps = {
 }
 
 const stripeKey =
-  process.env.NEXT_PUBLIC_STRIPE_KEY ||
-  process.env.NEXT_PUBLIC_MEDUSA_PAYMENTS_PUBLISHABLE_KEY
+  getEnv("NEXT_PUBLIC_STRIPE_KEY") ||
+  getEnv("NEXT_PUBLIC_MEDUSA_PAYMENTS_PUBLISHABLE_KEY")
 
-const medusaAccountId = process.env.NEXT_PUBLIC_MEDUSA_PAYMENTS_ACCOUNT_ID
+const medusaAccountId = getEnv("NEXT_PUBLIC_MEDUSA_PAYMENTS_ACCOUNT_ID")
 const stripePromise = stripeKey
   ? loadStripe(
       stripeKey,

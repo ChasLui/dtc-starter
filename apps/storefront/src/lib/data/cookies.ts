@@ -1,12 +1,10 @@
-import "server-only"
-import { cookies as nextCookies } from "next/headers"
+import { getCookie, setCookie } from "@tanstack/react-start/server"
 
 export const getAuthHeaders = async (): Promise<
   { authorization: string } | Record<string, never>
 > => {
   try {
-    const cookies = await nextCookies()
-    const token = cookies.get("_medusa_jwt")?.value
+    const token = getCookie("_medusa_jwt")
 
     if (!token) {
       return {}
@@ -20,8 +18,7 @@ export const getAuthHeaders = async (): Promise<
 
 export const getCacheTag = async (tag: string): Promise<string> => {
   try {
-    const cookies = await nextCookies()
-    const cacheId = cookies.get("_medusa_cache_id")?.value
+    const cacheId = getCookie("_medusa_cache_id")
 
     if (!cacheId) {
       return ""
@@ -50,8 +47,7 @@ export const getCacheOptions = async (
 }
 
 export const setAuthToken = async (token: string) => {
-  const cookies = await nextCookies()
-  cookies.set("_medusa_jwt", token, {
+  setCookie("_medusa_jwt", token, {
     maxAge: 60 * 60 * 24 * 7,
     httpOnly: true,
     sameSite: "strict",
@@ -60,8 +56,7 @@ export const setAuthToken = async (token: string) => {
 }
 
 export const removeAuthToken = async () => {
-  const cookies = await nextCookies()
-  cookies.set("_medusa_jwt", "", {
+  setCookie("_medusa_jwt", "", {
     maxAge: -1,
   })
 }
@@ -78,8 +73,7 @@ export type PendingCustomer = {
 // extra signup fields in a cookie so they survive the customer leaving to open
 // their inbox, and read them back when creating the customer at login.
 export const setPendingCustomer = async (customer: PendingCustomer) => {
-  const cookies = await nextCookies()
-  cookies.set("_medusa_pending_customer", JSON.stringify(customer), {
+  setCookie("_medusa_pending_customer", JSON.stringify(customer), {
     maxAge: 60 * 60 * 24,
     httpOnly: true,
     sameSite: "strict",
@@ -88,14 +82,13 @@ export const setPendingCustomer = async (customer: PendingCustomer) => {
 }
 
 export const getPendingCustomer = async (): Promise<PendingCustomer | null> => {
-  const cookies = await nextCookies()
-  const value = cookies.get("_medusa_pending_customer")?.value
-
-  if (!value) {
-    return null
-  }
-
   try {
+    const value = getCookie("_medusa_pending_customer")
+
+    if (!value) {
+      return null
+    }
+
     return JSON.parse(value) as PendingCustomer
   } catch {
     return null
@@ -103,20 +96,21 @@ export const getPendingCustomer = async (): Promise<PendingCustomer | null> => {
 }
 
 export const removePendingCustomer = async () => {
-  const cookies = await nextCookies()
-  cookies.set("_medusa_pending_customer", "", {
+  setCookie("_medusa_pending_customer", "", {
     maxAge: -1,
   })
 }
 
 export const getCartId = async () => {
-  const cookies = await nextCookies()
-  return cookies.get("_medusa_cart_id")?.value
+  try {
+    return getCookie("_medusa_cart_id")
+  } catch {
+    return undefined
+  }
 }
 
 export const setCartId = async (cartId: string) => {
-  const cookies = await nextCookies()
-  cookies.set("_medusa_cart_id", cartId, {
+  setCookie("_medusa_cart_id", cartId, {
     maxAge: 60 * 60 * 24 * 7,
     httpOnly: true,
     sameSite: "strict",
@@ -125,8 +119,15 @@ export const setCartId = async (cartId: string) => {
 }
 
 export const removeCartId = async () => {
-  const cookies = await nextCookies()
-  cookies.set("_medusa_cart_id", "", {
+  setCookie("_medusa_cart_id", "", {
     maxAge: -1,
   })
+}
+
+export const getOnboardingState = async (): Promise<boolean> => {
+  try {
+    return getCookie("_medusa_onboarding") === "true"
+  } catch {
+    return false
+  }
 }

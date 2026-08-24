@@ -1,11 +1,8 @@
-"use client"
-
-import Link from "next/link"
-import { useParams } from "next/navigation"
+import { Link, useParams } from "@tanstack/react-router"
 import React from "react"
 
 /**
- * Use this component to create a Next.js `<Link />` that persists the current country code in the url,
+ * Use this component to create a TanStack Router `<Link />` that persists the current country code in the url,
  * without having to explicitly pass it as a prop.
  */
 const LocalizedClientLink = ({
@@ -20,10 +17,10 @@ const LocalizedClientLink = ({
   passHref?: true
   [x: string]: unknown
 }) => {
-  const { countryCode } = useParams()
+  const { countryCode } = useParams({ strict: false })
 
   return (
-    <Link href={`/${countryCode}${href}`} {...props}>
+    <Link to={`/${countryCode}${href}` as never} {...props}>
       {children}
     </Link>
   )

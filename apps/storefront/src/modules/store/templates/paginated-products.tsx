@@ -1,5 +1,6 @@
 import { listProductsWithSort } from "@lib/data/products"
 import { getRegion } from "@lib/data/regions"
+import { useServerData } from "@lib/hooks/use-server-data"
 import { OptionValueIds } from "@lib/util/product-option-filters"
 import ProductPreview from "@modules/products/components/product-preview"
 import { Pagination } from "@modules/store/components/pagination"
@@ -15,7 +16,7 @@ type PaginatedProductsParams = {
   order?: string
 }
 
-export default async function PaginatedProducts({
+export default function PaginatedProducts({
   sortBy,
   page,
   collectionId,
@@ -32,43 +33,53 @@ export default async function PaginatedProducts({
   countryCode: string
   optionValueIds?: OptionValueIds
 }) {
-  const queryParams: PaginatedProductsParams = {
-    limit: 12,
-  }
+  const { data } = useServerData(async () => {
+    const queryParams: PaginatedProductsParams = {
+      limit: 12,
+    }
 
-  if (collectionId) {
-    queryParams["collection_id"] = [collectionId]
-  }
+    if (collectionId) {
+      queryParams["collection_id"] = [collectionId]
+    }
 
-  if (categoryId) {
-    queryParams["category_id"] = [categoryId]
-  }
+    if (categoryId) {
+      queryParams["category_id"] = [categoryId]
+    }
 
-  if (productsIds) {
-    queryParams["id"] = productsIds
-  }
+    if (productsIds) {
+      queryParams["id"] = productsIds
+    }
 
-  if (sortBy === "created_at") {
-    queryParams["order"] = "created_at"
-  }
+    if (sortBy === "created_at") {
+      queryParams["order"] = "created_at"
+    }
 
-  const region = await getRegion(countryCode)
+    const region = await getRegion({ data: countryCode })
 
-  if (!region) {
+    if (!region) {
+      return null
+    }
+
+    const {
+      response: { products, count },
+    } = await listProductsWithSort({
+      data: {
+        page,
+        queryParams,
+        sortBy,
+        countryCode,
+        optionValueIds,
+      },
+    })
+
+    return { products, count, region }
+  })
+
+  if (!data) {
     return null
   }
 
-  const {
-    response: { products, count },
-  } = await listProductsWithSort({
-    page,
-    queryParams,
-    sortBy,
-    countryCode,
-    optionValueIds,
-  })
-
-  const totalPages = Math.ceil(count / PRODUCT_LIMIT)
+  const totalPages = Math.ceil(data.count / PRODUCT_LIMIT)
 
   return (
     <>
@@ -76,10 +87,10 @@ export default async function PaginatedProducts({
         className="grid grid-cols-2 w-full small:grid-cols-3 medium:grid-cols-4 gap-x-6 gap-y-8"
         data-testid="products-list"
       >
-        {products.map((p) => {
+        {data.products.map((p) => {
           return (
             <li key={p.id}>
-              <ProductPreview product={p} region={region} />
+              <ProductPreview product={p} region={data.region} />
             </li>
           )
         })}

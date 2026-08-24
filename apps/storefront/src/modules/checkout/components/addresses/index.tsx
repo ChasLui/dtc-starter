@@ -7,7 +7,7 @@ import { HttpTypes } from "@medusajs/types"
 import Divider from "@modules/common/components/divider"
 import { Heading, Text } from "@modules/common/components/ui"
 import Spinner from "@modules/common/icons/spinner"
-import { usePathname, useRouter, useSearchParams } from "next/navigation"
+import { useLocation, useRouter } from "@tanstack/react-router"
 import { useActionState } from "react"
 import BillingAddress from "../billing_address"
 import ErrorMessage from "../error-message"
@@ -21,9 +21,10 @@ const Addresses = ({
   cart: HttpTypes.StoreCart | null
   customer: HttpTypes.StoreCustomer | null
 }) => {
-  const searchParams = useSearchParams()
   const router = useRouter()
-  const pathname = usePathname()
+  const location = useLocation()
+  const pathname = location.pathname
+  const searchParams = new URLSearchParams(location.searchStr)
 
   const isOpen = searchParams.get("step") === "address"
 
@@ -34,10 +35,16 @@ const Addresses = ({
   )
 
   const handleEdit = () => {
-    router.push(pathname + "?step=address")
+    router.navigate({
+      to: pathname as never,
+      search: { step: "address" } as never,
+    })
   }
 
-  const [message, formAction] = useActionState(setAddresses, null)
+  const setAddressesAction = (state: unknown, formData: FormData) =>
+    setAddresses({ data: formData })
+
+  const [message, formAction] = useActionState(setAddressesAction, null)
 
   return (
     <div className="bg-white">

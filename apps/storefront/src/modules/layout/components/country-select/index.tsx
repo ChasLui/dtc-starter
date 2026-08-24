@@ -11,7 +11,7 @@ import { Fragment, useEffect, useMemo, useState } from "react"
 import ReactCountryFlag from "react-country-flag"
 
 import { StateType } from "@lib/hooks/use-toggle-state"
-import { useParams, usePathname } from "next/navigation"
+import { isRedirect, useLocation, useParams, useRouter } from "@tanstack/react-router"
 import { updateRegion } from "@lib/data/cart"
 import { HttpTypes } from "@medusajs/types"
 
@@ -29,8 +29,9 @@ type CountrySelectProps = {
 const CountrySelect = ({ toggleState, regions }: CountrySelectProps) => {
   const [current, setCurrent] = useState<CountryOption | undefined>(undefined)
 
-  const { countryCode } = useParams()
-  const currentPath = usePathname().split(`/${countryCode}`)[1]
+  const { countryCode } = useParams({ strict: false })
+  const currentPath = useLocation().pathname.split(`/${countryCode}`)[1] || "/"
+  const router = useRouter()
 
   const { state, close } = toggleState
 
@@ -55,9 +56,21 @@ const CountrySelect = ({ toggleState, regions }: CountrySelectProps) => {
     }
   }, [options, countryCode])
 
-  const handleChange = (option: CountryOption) => {
-    updateRegion(option.country, currentPath)
+  const handleChange = async (option: CountryOption) => {
     close()
+    try {
+      await updateRegion({
+        data: { countryCode: option.country, currentPath },
+      })
+    } catch (error) {
+      if (isRedirect(error)) {
+        router.navigate({
+          href: (error as { options: { href: string } }).options.href,
+        })
+        return
+      }
+      throw error
+    }
   }
 
   return (

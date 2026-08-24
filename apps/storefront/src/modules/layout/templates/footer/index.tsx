@@ -1,15 +1,11 @@
-import { listCategories } from "@lib/data/categories";
-import { listCollections } from "@lib/data/collections";
+import { useStorefront } from "@lib/context/storefront-context";
 import { Text, clx } from "@modules/common/components/ui";
 
 import LocalizedClientLink from "@modules/common/components/localized-client-link";
 import MedusaCTA from "@modules/layout/components/medusa-cta";
 
-export default async function Footer() {
-  const { collections } = await listCollections({
-    fields: "*products",
-  });
-  const productCategories = await listCategories();
+export default function Footer() {
+  const { collections, categories } = useStorefront();
 
   return (
     <footer className="border-t border-ui-border-base w-full">
@@ -24,7 +20,7 @@ export default async function Footer() {
             </LocalizedClientLink>
           </div>
           <div className="text-small-regular gap-10 md:gap-x-16 grid grid-cols-2 sm:grid-cols-3">
-            {productCategories && productCategories?.length > 0 && (
+            {categories && categories?.length > 0 && (
               <div className="flex flex-col gap-y-2">
                 <span className="txt-small-plus txt-ui-fg-base">
                   Categories
@@ -33,7 +29,7 @@ export default async function Footer() {
                   className="grid grid-cols-1 gap-2"
                   data-testid="footer-categories"
                 >
-                  {productCategories?.slice(0, 6).map((c) => {
+                  {categories?.slice(0, 6).map((c) => {
                     if (c.parent_category) {
                       return;
                     }

@@ -7,11 +7,14 @@ import { Button } from "@modules/common/components/ui"
 import Divider from "@modules/common/components/divider"
 import OptionSelect from "@modules/products/components/product-actions/option-select"
 import { isEqual } from "lodash"
-import { useParams, usePathname, useSearchParams } from "next/navigation"
+import {
+  useLocation,
+  useParams,
+  useRouter,
+} from "@tanstack/react-router"
 import { useEffect, useMemo, useRef, useState } from "react"
 import ProductPrice from "../product-price"
 import MobileActions from "./mobile-actions"
-import { useRouter } from "next/navigation"
 
 type ProductActionsProps = {
   product: HttpTypes.StoreProduct
@@ -33,12 +36,12 @@ export default function ProductActions({
   disabled,
 }: ProductActionsProps) {
   const router = useRouter()
-  const pathname = usePathname()
-  const searchParams = useSearchParams()
+  const location = useLocation()
+  const pathname = location.pathname
 
   const [options, setOptions] = useState<Record<string, string | undefined>>({})
   const [isAdding, setIsAdding] = useState(false)
-  const countryCode = useParams().countryCode as string
+  const { countryCode } = useParams({ strict: false }) as { countryCode: string }
 
   // If there is only 1 variant, preselect the options
   useEffect(() => {
@@ -67,7 +70,7 @@ export default function ProductActions({
     }))
   }
 
-  //check if the selected options produce a valid variant
+  // check if the selected options produce a valid variant
   const isValidVariant = useMemo(() => {
     return product.variants?.some((v) => {
       const variantOptions = optionsAsKeymap(v.options)
@@ -76,7 +79,7 @@ export default function ProductActions({
   }, [product.variants, options])
 
   useEffect(() => {
-    const params = new URLSearchParams(searchParams.toString())
+    const params = new URLSearchParams(location.searchStr)
     const value = isValidVariant ? selectedVariant?.id : null
 
     if (params.get("v_id") === value) {
@@ -89,7 +92,12 @@ export default function ProductActions({
       params.delete("v_id")
     }
 
-    router.replace(pathname + "?" + params.toString())
+    router.navigate({
+      to: pathname as never,
+      search: Object.fromEntries(params) as never,
+      replace: true,
+    })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedVariant, isValidVariant])
 
   // check if the selected variant is in stock
@@ -127,11 +135,14 @@ export default function ProductActions({
     setIsAdding(true)
 
     await addToCart({
-      variantId: selectedVariant.id,
-      quantity: 1,
-      countryCode,
+      data: {
+        variantId: selectedVariant.id,
+        quantity: 1,
+        countryCode,
+      },
     })
 
+    await router.invalidate()
     setIsAdding(false)
   }
 

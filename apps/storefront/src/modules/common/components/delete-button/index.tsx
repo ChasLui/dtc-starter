@@ -1,6 +1,7 @@
 import { deleteLineItem } from "@lib/data/cart"
 import { Spinner, Trash } from "@medusajs/icons"
 import { clx } from "@modules/common/components/ui"
+import { useRouter } from "@tanstack/react-router"
 import { useState } from "react"
 
 const DeleteButton = ({
@@ -13,12 +14,17 @@ const DeleteButton = ({
   className?: string
 }) => {
   const [isDeleting, setIsDeleting] = useState(false)
+  const router = useRouter()
 
-  const handleDelete = async (id: string) => {
+  const handleDelete = async (lineId: string) => {
     setIsDeleting(true)
-    await deleteLineItem(id).catch((_err) => {
-      setIsDeleting(false)
-    })
+    await deleteLineItem({ data: lineId })
+      .then(async () => {
+        await router.invalidate()
+      })
+      .catch((_err) => {
+        setIsDeleting(false)
+      })
   }
 
   return (

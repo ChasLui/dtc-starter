@@ -7,7 +7,6 @@ import ProductTabs from "@modules/products/components/product-tabs"
 import RelatedProducts from "@modules/products/components/related-products"
 import ProductInfo from "@modules/products/templates/product-info"
 import SkeletonRelatedProducts from "@modules/skeletons/templates/skeleton-related-products"
-import { notFound } from "next/navigation"
 import { HttpTypes } from "@medusajs/types"
 
 import ProductActionsWrapper from "./product-actions-wrapper"
@@ -17,6 +16,7 @@ type ProductTemplateProps = {
   region: HttpTypes.StoreRegion
   countryCode: string
   images: HttpTypes.StoreProductImage[]
+  isOnboarding?: boolean
 }
 
 const ProductTemplate: React.FC<ProductTemplateProps> = ({
@@ -24,9 +24,10 @@ const ProductTemplate: React.FC<ProductTemplateProps> = ({
   region,
   countryCode,
   images,
+  isOnboarding = false,
 }) => {
   if (!product || !product.id) {
-    return notFound()
+    return null
   }
 
   return (
@@ -43,7 +44,7 @@ const ProductTemplate: React.FC<ProductTemplateProps> = ({
           <ImageGallery images={images} />
         </div>
         <div className="flex flex-col small:sticky small:top-48 small:py-0 small:max-w-[300px] w-full py-8 gap-y-12">
-          <ProductOnboardingCta />
+          <ProductOnboardingCta isOnboarding={isOnboarding} />
           <Suspense
             fallback={
               <ProductActions

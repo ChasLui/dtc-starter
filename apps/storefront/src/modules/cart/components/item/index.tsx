@@ -12,6 +12,7 @@ import LineItemUnitPrice from "@modules/common/components/line-item-unit-price"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import Spinner from "@modules/common/icons/spinner"
 import Thumbnail from "@modules/products/components/thumbnail"
+import { useRouter } from "@tanstack/react-router"
 import { useState } from "react"
 
 type ItemProps = {
@@ -23,15 +24,16 @@ type ItemProps = {
 const Item = ({ item, type = "full", currencyCode }: ItemProps) => {
   const [updating, setUpdating] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const router = useRouter()
 
   const changeQuantity = async (quantity: number) => {
     setError(null)
     setUpdating(true)
 
-    await updateLineItem({
-      lineId: item.id,
-      quantity,
-    })
+    await updateLineItem({ data: { lineId: item.id, quantity } })
+      .then(async () => {
+        await router.invalidate()
+      })
       .catch((err) => {
         setError(err.message)
       })

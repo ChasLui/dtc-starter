@@ -5,6 +5,7 @@ import { placeOrder } from "@lib/data/cart"
 import { HttpTypes } from "@medusajs/types"
 import { Button } from "@modules/common/components/ui"
 import { useElements, useStripe } from "@stripe/react-stripe-js"
+import { isRedirect, useRouter } from "@tanstack/react-router"
 import React, { useState } from "react"
 import ErrorMessage from "../error-message"
 
@@ -56,14 +57,20 @@ const StripePaymentButton = ({
   const [submitting, setSubmitting] = useState(false)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
+  const router = useRouter()
+
   const onPaymentCompleted = async () => {
-    await placeOrder()
-      .catch((err) => {
-        setErrorMessage(err.message)
-      })
-      .finally(() => {
-        setSubmitting(false)
-      })
+    try {
+      await placeOrder()
+    } catch (err) {
+      if (isRedirect(err)) {
+        router.navigate((err as { options: unknown }).options as never)
+        return
+      }
+      setErrorMessage((err as Error).message)
+    } finally {
+      setSubmitting(false)
+    }
   }
 
   const stripe = useStripe()
@@ -155,14 +162,20 @@ const ManualTestPaymentButton = ({ notReady }: { notReady: boolean }) => {
   const [submitting, setSubmitting] = useState(false)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
+  const router = useRouter()
+
   const onPaymentCompleted = async () => {
-    await placeOrder()
-      .catch((err) => {
-        setErrorMessage(err.message)
-      })
-      .finally(() => {
-        setSubmitting(false)
-      })
+    try {
+      await placeOrder()
+    } catch (err) {
+      if (isRedirect(err)) {
+        router.navigate((err as { options: unknown }).options as never)
+        return
+      }
+      setErrorMessage((err as Error).message)
+    } finally {
+      setSubmitting(false)
+    }
   }
 
   const handlePayment = () => {

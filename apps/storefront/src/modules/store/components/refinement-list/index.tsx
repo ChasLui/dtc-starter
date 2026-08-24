@@ -1,6 +1,6 @@
 "use client"
 
-import { usePathname, useRouter, useSearchParams } from "next/navigation"
+import { useLocation, useRouter } from "@tanstack/react-router"
 import { useCallback, useMemo } from "react"
 
 import {
@@ -23,36 +23,39 @@ const RefinementList = ({
   "data-testid": dataTestId,
 }: RefinementListProps) => {
   const router = useRouter()
-  const pathname = usePathname()
-  const searchParams = useSearchParams()
+  const location = useLocation()
 
   const updateQueryParams = useCallback(
     (updater: (params: URLSearchParams) => void) => {
-      const params = new URLSearchParams(searchParams.toString())
+      const params = new URLSearchParams(location.searchStr)
       updater(params)
 
       params.delete("page")
 
-      const queryString = params.toString()
-      const currentQuery = searchParams.toString()
-      const nextPath = queryString ? `${pathname}?${queryString}` : pathname
-      const currentPath = currentQuery
-        ? `${pathname}?${currentQuery}`
-        : pathname
+      const search: Record<string, unknown> = {}
+      const sortByParam = params.get("sortBy")
+      if (sortByParam) search.sortBy = sortByParam
+      const optionValueIds = params.getAll(OPTION_VALUE_QUERY_KEY)
+      if (optionValueIds.length) search.optionValueIds = optionValueIds
 
-      if (nextPath !== currentPath) {
-        router.push(nextPath)
-      }
+      router.navigate({
+        to: location.pathname as never,
+        search: search as never,
+        replace: true,
+      })
     },
-    [pathname, router, searchParams]
+    [location, router]
   )
 
   const setQueryParams = (name: string, value: string) =>
     updateQueryParams((params) => params.set(name, value))
 
   const selectedOptionValueIds = useMemo(
-    () => parseOptionValueIds(searchParams),
-    [searchParams]
+    () =>
+      parseOptionValueIds(
+        location.search as Record<string, string | string[] | undefined>
+      ),
+    [location.search]
   )
 
   const setOptionValueIds = (valueIds: string[]) =>

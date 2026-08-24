@@ -1,6 +1,7 @@
 import { Radio as RadioGroupOption } from "@headlessui/react"
 import { Text, clx } from "@modules/common/components/ui"
-import React, { useContext, useMemo, type JSX } from "react"
+import React, {  useContext, useMemo } from "react"
+import type {JSX} from "react";
 
 import Radio from "@modules/common/components/radio"
 

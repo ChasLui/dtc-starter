@@ -8,8 +8,8 @@ import { HttpTypes } from "@medusajs/types"
 import ErrorMessage from "@modules/checkout/components/error-message"
 import Divider from "@modules/common/components/divider"
 import MedusaRadio from "@modules/common/components/radio"
-import { Button, clx, Heading, Text } from "@modules/common/components/ui"
-import { usePathname, useRouter, useSearchParams } from "next/navigation"
+import { Button, Heading, Text, clx } from "@modules/common/components/ui"
+import { useLocation, useRouter } from "@tanstack/react-router"
 import { useEffect, useState } from "react"
 
 const PICKUP_OPTION_ON = "__PICKUP_ON"
@@ -63,9 +63,10 @@ const Shipping: React.FC<ShippingProps> = ({
     cart.shipping_methods?.at(-1)?.shipping_option_id || null
   )
 
-  const searchParams = useSearchParams()
   const router = useRouter()
-  const pathname = usePathname()
+  const location = useLocation()
+  const pathname = location.pathname
+  const searchParams = new URLSearchParams(location.searchStr)
 
   const isOpen = searchParams.get("step") === "delivery"
 
@@ -85,7 +86,11 @@ const Shipping: React.FC<ShippingProps> = ({
     if (_shippingMethods?.length) {
       const promises = _shippingMethods
         .filter((sm) => sm.price_type === "calculated")
-        .map((sm) => calculatePriceForShippingOption(sm.id, cart.id))
+        .map((sm) =>
+          calculatePriceForShippingOption({
+            data: { optionId: sm.id, cartId: cart.id },
+          })
+        )
 
       if (promises.length) {
         Promise.allSettled(promises).then((res) => {
@@ -110,11 +115,17 @@ const Shipping: React.FC<ShippingProps> = ({
   }, [availableShippingMethods])
 
   const handleEdit = () => {
-    router.push(pathname + "?step=delivery", { scroll: false })
+    router.navigate({
+      to: pathname as never,
+      search: { step: "delivery" } as never,
+    })
   }
 
   const handleSubmit = () => {
-    router.push(pathname + "?step=payment", { scroll: false })
+    router.navigate({
+      to: pathname as never,
+      search: { step: "payment" } as never,
+    })
   }
 
   const handleSetShippingMethod = async (
@@ -136,7 +147,12 @@ const Shipping: React.FC<ShippingProps> = ({
       return id
     })
 
-    await setShippingMethod({ cartId: cart.id, shippingMethodId: id })
+    await setShippingMethod({
+      data: { cartId: cart.id, shippingMethodId: id },
+    })
+      .then(async () => {
+        await router.invalidate()
+      })
       .catch((err) => {
         setShippingMethodId(currentId)
 

@@ -19,9 +19,10 @@ coverage
 # TypeScript incremental build cache
 *.tsbuildinfo
 
-# Next.js
+# Framework build output (TanStack Start / Nitro)
 **/.next/
 **/out/
+**/.output/
 
 # Production
 **/build

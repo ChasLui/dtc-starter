@@ -1,16 +1,13 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
-import { useSearchParams } from "next/navigation"
 import { Button } from "@modules/common/components/ui"
 import { confirmEmailVerification } from "@lib/data/customer"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 
 type VerificationState = "verifying" | "success" | "error"
 
-const VerifyAccount = () => {
-  const searchParams = useSearchParams()
-  const token = searchParams.get("token")
+const VerifyAccount = ({ token }: { token?: string }) => {
   const [state, setState] = useState<VerificationState>("verifying")
   // Guard against the effect running twice in React Strict Mode, which would
   // consume the single-use token before the customer sees the result.
@@ -27,7 +24,7 @@ const VerifyAccount = () => {
       return
     }
 
-    confirmEmailVerification(token).then(({ success }) =>
+    confirmEmailVerification({ data: token }).then(({ success }) =>
       setState(success ? "success" : "error")
     )
   }, [token])

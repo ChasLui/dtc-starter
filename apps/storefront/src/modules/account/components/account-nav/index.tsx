@@ -2,7 +2,7 @@
 
 import { ArrowRightOnRectangle } from "@medusajs/icons"
 import { clx } from "@modules/common/components/ui"
-import { useParams, usePathname } from "next/navigation"
+import { useLocation, useParams } from "@tanstack/react-router"
 
 import { signout } from "@lib/data/customer"
 import { HttpTypes } from "@medusajs/types"
@@ -17,11 +17,11 @@ const AccountNav = ({
 }: {
   customer: HttpTypes.StoreCustomer | null
 }) => {
-  const route = usePathname()
-  const { countryCode } = useParams() as { countryCode: string }
+  const route = useLocation().pathname
+  const { countryCode } = useParams({ strict: false }) as { countryCode: string }
 
   const handleLogout = async () => {
-    await signout(countryCode)
+    await signout({ data: countryCode })
   }
 
   return (
@@ -180,7 +180,7 @@ const AccountNavLink = ({
   children,
   "data-testid": dataTestId,
 }: AccountNavLinkProps) => {
-  const { countryCode }: { countryCode: string } = useParams()
+  const { countryCode }: { countryCode: string } = useParams({ strict: false })
 
   const active = route.split(countryCode)[1] === href
   return (

@@ -16,7 +16,7 @@ import {
   clx,
 } from "@modules/common/components/ui"
 import { HttpTypes } from "@medusajs/types"
-import { usePathname, useRouter, useSearchParams } from "next/navigation"
+import { useLocation, useRouter } from "@tanstack/react-router"
 import { useCallback, useEffect, useState } from "react"
 
 const Payment = ({
@@ -38,9 +38,10 @@ const Payment = ({
     activeSession?.provider_id ?? ""
   )
 
-  const searchParams = useSearchParams()
   const router = useRouter()
-  const pathname = usePathname()
+  const location = useLocation()
+  const pathname = location.pathname
+  const searchParams = new URLSearchParams(location.searchStr)
 
   const isOpen = searchParams.get("step") === "payment"
 
@@ -48,8 +49,8 @@ const Payment = ({
     setError(null)
     setSelectedPaymentMethod(method)
     if (isStripeLike(method)) {
-      await initiatePaymentSession(cart, {
-        provider_id: method,
+      await initiatePaymentSession({
+        data: { cart, data: { provider_id: method } },
       })
     }
   }
@@ -72,8 +73,9 @@ const Payment = ({
   )
 
   const handleEdit = () => {
-    router.push(pathname + "?" + createQueryString("step", "payment"), {
-      scroll: false,
+    router.navigate({
+      to: pathname as never,
+      search: { step: "payment" } as never,
     })
   }
 
@@ -87,18 +89,17 @@ const Payment = ({
         activeSession?.provider_id === selectedPaymentMethod
 
       if (!checkActiveSession) {
-        await initiatePaymentSession(cart, {
-          provider_id: selectedPaymentMethod,
+        await initiatePaymentSession({
+          data: { cart, data: { provider_id: selectedPaymentMethod } },
         })
       }
 
       if (!shouldInputCard) {
-        return router.push(
-          pathname + "?" + createQueryString("step", "review"),
-          {
-            scroll: false,
-          }
-        )
+        await router.invalidate()
+        return router.navigate({
+          to: pathname as never,
+          search: { step: "review" } as never,
+        })
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : String(err))

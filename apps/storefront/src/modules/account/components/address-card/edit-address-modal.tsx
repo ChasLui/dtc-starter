@@ -30,7 +30,10 @@ const EditAddress: React.FC<EditAddressProps> = ({
   const [successState, setSuccessState] = useState(false)
   const { state, open, close: closeModal } = useToggleState(false)
 
-  const [formState, formAction] = useActionState(updateCustomerAddress, {
+  const updateCustomerAddressAction = (state: unknown, formData: FormData) =>
+    updateCustomerAddress({ data: formData })
+
+  const [formState, formAction] = useActionState(updateCustomerAddressAction, {
     success: false,
     error: null,
   } as { success: boolean; error: string | null })
@@ -55,7 +58,7 @@ const EditAddress: React.FC<EditAddressProps> = ({
 
   const removeAddress = async () => {
     setRemoving(true)
-    await deleteCustomerAddress(address.id)
+    await deleteCustomerAddress({ data: address.id })
     setRemoving(false)
   }
 

@@ -3,11 +3,11 @@
 import { Heading, Text, clx } from "@modules/common/components/ui"
 
 import PaymentButton from "../payment-button"
-import { useSearchParams } from "next/navigation"
+import { useLocation } from "@tanstack/react-router"
 import { HttpTypes } from "@medusajs/types"
 
 const Review = ({ cart }: { cart: HttpTypes.StoreCart }) => {
-  const searchParams = useSearchParams()
+  const searchParams = new URLSearchParams(useLocation().searchStr)
 
   const isOpen = searchParams.get("step") === "review"
 

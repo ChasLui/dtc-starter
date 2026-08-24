@@ -1,4 +1,3 @@
-import { notFound } from "next/navigation"
 import { Suspense } from "react"
 
 import InteractiveLink from "@modules/common/components/interactive-link"
@@ -26,7 +25,9 @@ export default function CategoryTemplate({
   const pageNumber = page ? parseInt(page) : 1
   const sort = sortBy || "created_at"
 
-  if (!category || !countryCode) notFound()
+  if (!category || !countryCode) {
+    return null
+  }
 
   const parents = [] as HttpTypes.StoreProductCategory[]
 

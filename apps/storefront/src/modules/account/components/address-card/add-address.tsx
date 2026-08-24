@@ -21,7 +21,10 @@ const AddAddress = ({
   const [successState, setSuccessState] = useState(false)
   const { state, open, close: closeModal } = useToggleState(false)
 
-  const [formState, formAction] = useActionState(addCustomerAddress, {
+  const addCustomerAddressAction = (state: unknown, formData: FormData) =>
+    addCustomerAddress({ data: formData })
+
+  const [formState, formAction] = useActionState(addCustomerAddressAction, {
     success: false,
     error: null,
   } as { success: boolean; error: string | null })

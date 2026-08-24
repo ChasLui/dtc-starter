@@ -1,13 +1,13 @@
 import clsx from "clsx"
 import {
   ButtonHTMLAttributes,
-  forwardRef,
   HTMLAttributes,
   InputHTMLAttributes,
   LabelHTMLAttributes,
   TableHTMLAttributes,
   TdHTMLAttributes,
   ThHTMLAttributes,
+  forwardRef,
 } from "react"
 
 // TODO: Add Toaster component back when needed for notifications
