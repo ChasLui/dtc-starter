@@ -6,7 +6,8 @@
     "node": "^20.19.0 || >=22.12.0"
   },
   "workspaces": [
-    "apps/*"
+    "apps/*",
+    "vendor/@medusajs/deps"
   ],
   "scripts": {
     "dev": "concurrently -k -n backend,storefront -c blue,magenta \"bun run backend:dev\" \"bun run storefront:dev\"",
@@ -27,14 +28,20 @@
     "test:unit": "bun run --cwd apps/backend test:unit --passWithNoTests",
     "test:integration:modules": "bun run --cwd apps/backend test:integration:modules --passWithNoTests",
     "test:integration:http": "bun run --cwd apps/backend test:integration:http --passWithNoTests",
-    "backend:seed": "bun run --cwd apps/backend medusa exec ./src/migration-scripts/initial-data-seed.ts"
+    "backend:seed": "bun run --cwd apps/backend medusa exec ./src/migration-scripts/initial-data-seed.ts",
+    "postinstall": "bun run scripts/patch-sqlite.cjs"
   },
   "overrides": {
     "@types/react": "19.0.5",
     "@types/react-dom": "19.0.5",
-    "vite": "^8.2.2"
+    "vite": "^8.2.2",
+    "@medusajs/deps": "workspace:vendor/@medusajs/deps",
+    "@mikro-orm/core": "6.6.14",
+    "@mikro-orm/knex": "6.6.14",
+    "@mikro-orm/migrations": "6.6.14"
   },
   "devDependencies": {
+    "@medusajs/deps": "2.19.0",
     "@medusajs/eslint-plugin": "2.19.0",
     "concurrently": "^9.1.2",
     "oxfmt": "^0.64.0",

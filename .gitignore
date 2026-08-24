@@ -58,3 +58,9 @@ yarn-error.log*
 ehthumbs.db
 Thumbs.db
 **/.DS_Store
+
+# SQLite database files
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal
+!vendor/@medusajs/deps/dist/

@@ -1,0 +1,48 @@
+{
+  "name": "@medusajs/deps",
+  "version": "2.19.0",
+  "description": "Dependencies for Medusa (local fork: mikro-orm/postgresql swapped to sqlite)",
+  "main": "dist/index.js",
+  "engines": {
+    "node": ">=20"
+  },
+  "license": "MIT",
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": "./dist/index.js",
+    "./opentelemetry/instrumentation-pg": "./dist/opentelemetry-instrumentation-pg.js",
+    "./opentelemetry/sdk-node": "./dist/opentelemetry-sdk-node.js",
+    "./opentelemetry/sdk-trace-node": "./dist/opentelemetry-sdk-trace-node.js",
+    "./opentelemetry/resources": "./dist/opentelemetry-resources.js",
+    "./opentelemetry/api": "./dist/opentelemetry-api.js",
+    "./mikro-orm/cli": "./dist/mikro-orm-cli.js",
+    "./mikro-orm/core": "./dist/mikro-orm-core.js",
+    "./mikro-orm/knex": "./dist/mikro-orm-knex.js",
+    "./mikro-orm/migrations": "./dist/mikro-orm-migrations.js",
+    "./mikro-orm/postgresql": "./dist/mikro-orm-postgresql.js",
+    "./mikro-orm/sqlite": "./dist/mikro-orm-sqlite.js",
+    "./awilix": "./dist/awilix.js",
+    "./pg": "./dist/pg.js",
+    "./zod": "./dist/zod.js"
+  },
+  "scripts": {
+    "build": "echo 'vendored fork - no build needed'"
+  },
+  "dependencies": {
+    "@mikro-orm/cli": "6.6.14",
+    "@mikro-orm/core": "6.6.14",
+    "@mikro-orm/knex": "6.6.14",
+    "@mikro-orm/migrations": "6.6.14",
+    "@mikro-orm/sqlite": "6.6.14",
+    "@opentelemetry/api": "^1.9.0",
+    "@opentelemetry/instrumentation-pg": "^0.52.0",
+    "@opentelemetry/resources": "^2.7.0",
+    "@opentelemetry/sdk-node": "^0.220.0",
+    "@opentelemetry/sdk-trace-node": "^2.7.0",
+    "awilix": "^8.0.1",
+    "pg": "^8.16.3",
+    "zod": "4.2.0"
+  }
+}

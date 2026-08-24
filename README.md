@@ -66,15 +66,19 @@ The fastest way to get started is deploying with [Medusa Cloud](https://cloud.me
 > **Prerequisites:
 >
 > - [Node.js](https://nodejs.org/) v20+
-> - [PostgreSQL](https://www.postgresql.org/) v15+
 > - [bun](https://bun.sh) v1.2+
+
+No PostgreSQL or Redis needed — the backend is SQLite all-in-one: the whole
+stack runs on a single database file created on first migration.
 
 1. Clone the repository and install dependencies:
 
 ```bash
 git clone https://github.com/medusajs/dtc-starter.git
 cd dtc-starter
-bun install
+# npm_config_python lets bun build the sqlite3 native binding (Homebrew
+# Python lacks distutils); the postinstall then applies the SQLite patches.
+npm_config_python=/usr/bin/python3 bun install
 ```
 
 2. Set up environment variables for the backend:
@@ -83,18 +87,20 @@ bun install
 cp apps/backend/.env.template apps/backend/.env
 ```
 
-3. Set the database URL in `apps/backend/.env`:
+3. The template already points at SQLite — the database file
+   (`apps/backend/medusa.sqlite`) is created automatically:
 
 ```bash
-# Replace with actual database URL, make sure the database exists.
-DATABASE_URL=postgres://postgres:@localhost:5432/medusa-dtc-starter
+# apps/backend/.env
+DATABASE_URL=sqlite://./medusa.sqlite
 ```
 
-4. Run migrations:
+4. Run migrations, sync link tables and seed initial data (the seed runs
+   automatically as a migration script):
 
 ```bash
 cd apps/backend
-bunx medusa db:migrate
+bunx medusa db:migrate --execute-all-links
 ```
 
 5. Add admin user:

@@ -39,6 +39,9 @@
   "devDependencies": {
     "@medusajs/test-utils": "2.19.0",
     "@medusajs/utils": "2.19.0",
+    "@mikro-orm/core": "6.6.14",
+    "@mikro-orm/knex": "6.6.14",
+    "@mikro-orm/sqlite": "6.6.14",
     "@types/node": "^20.12.11",
     "@types/react": "^18.3.2",
     "@types/react-dom": "^18.2.25",
