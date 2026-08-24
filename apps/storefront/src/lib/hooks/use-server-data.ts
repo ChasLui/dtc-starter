@@ -29,7 +29,7 @@ export function useServerData<T>(fetcher: () => Promise<T>): {
     return () => {
       cancelled = true
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // oxlint-disable-next-line react/exhaustive-deps
   }, [])
 
   return { data, error, isLoading }

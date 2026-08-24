@@ -22,7 +22,7 @@ export default function ProductRail({
           fields: "*variants.calculated_price",
         },
       },
-    })
+    }),
   )
 
   const pricedProducts = data?.response.products

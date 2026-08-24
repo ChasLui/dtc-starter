@@ -18,7 +18,9 @@ const AccountNav = ({
   customer: HttpTypes.StoreCustomer | null
 }) => {
   const route = useLocation().pathname
-  const { countryCode } = useParams({ strict: false }) as { countryCode: string }
+  const { countryCode } = useParams({ strict: false }) as {
+    countryCode: string
+  }
 
   const handleLogout = async () => {
     await signout({ data: countryCode })

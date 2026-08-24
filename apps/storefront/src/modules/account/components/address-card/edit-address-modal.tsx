@@ -47,7 +47,7 @@ const EditAddress: React.FC<EditAddressProps> = ({
     if (successState) {
       close()
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // oxlint-disable-next-line react/exhaustive-deps
   }, [successState])
 
   useEffect(() => {
@@ -69,7 +69,7 @@ const EditAddress: React.FC<EditAddressProps> = ({
           "border rounded-rounded p-5 min-h-[220px] h-full w-full flex flex-col justify-between transition-colors",
           {
             "border-gray-900": isActive,
-          }
+          },
         )}
         data-testid="address-container"
       >

@@ -4,7 +4,7 @@ import TransferImage from "@modules/order/components/transfer-image"
 import { createFileRoute } from "@tanstack/react-router"
 
 export const Route = createFileRoute(
-  "/$countryCode/_main/order/$id/transfer/$token/"
+  "/$countryCode/_main/order/$id/transfer/$token/",
 )({
   component: TransferPage,
 })

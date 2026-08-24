@@ -25,7 +25,7 @@ const VerifyAccount = ({ token }: { token?: string }) => {
     }
 
     confirmEmailVerification({ data: token }).then(({ success }) =>
-      setState(success ? "success" : "error")
+      setState(success ? "success" : "error"),
     )
   }, [token])
 

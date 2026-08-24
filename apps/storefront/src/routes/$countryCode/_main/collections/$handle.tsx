@@ -6,31 +6,33 @@ import { createFileRoute, notFound } from "@tanstack/react-router"
 
 export const PRODUCT_LIMIT = 12
 
-export const Route = createFileRoute("/$countryCode/_main/collections/$handle")({
-  validateSearch: (search: Record<string, unknown>) => ({
-    sortBy: (search.sortBy as SortOptions) ?? ("created_at" as SortOptions),
-    page: typeof search.page === "string" ? parseInt(search.page) || 1 : 1,
-    optionValueIds: parseOptionValueIds(
-      search as Record<string, string | string[] | undefined>
-    ),
-  }),
-  loader: async ({ params }) => {
-    const collection = await getCollectionByHandle({ data: params.handle })
+export const Route = createFileRoute("/$countryCode/_main/collections/$handle")(
+  {
+    validateSearch: (search: Record<string, unknown>) => ({
+      sortBy: (search.sortBy as SortOptions) ?? ("created_at" as SortOptions),
+      page: typeof search.page === "string" ? parseInt(search.page) || 1 : 1,
+      optionValueIds: parseOptionValueIds(
+        search as Record<string, string | string[] | undefined>,
+      ),
+    }),
+    loader: async ({ params }) => {
+      const collection = await getCollectionByHandle({ data: params.handle })
 
-    if (!collection) {
-      throw notFound()
-    }
+      if (!collection) {
+        throw notFound()
+      }
 
-    return collection
+      return collection
+    },
+    head: ({ loaderData }) => ({
+      meta: [
+        { title: `${loaderData!.title} | Medusa Store` },
+        { name: "description", content: `${loaderData!.title} collection` },
+      ],
+    }),
+    component: CollectionPage,
   },
-  head: ({ loaderData }) => ({
-    meta: [
-      { title: `${loaderData!.title} | Medusa Store` },
-      { name: "description", content: `${loaderData!.title} collection` },
-    ],
-  }),
-  component: CollectionPage,
-})
+)
 
 function CollectionPage() {
   const collection = Route.useLoaderData()

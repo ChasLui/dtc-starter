@@ -11,7 +11,12 @@ import { Fragment, useEffect, useMemo, useState } from "react"
 import ReactCountryFlag from "react-country-flag"
 
 import { StateType } from "@lib/hooks/use-toggle-state"
-import { isRedirect, useLocation, useParams, useRouter } from "@tanstack/react-router"
+import {
+  isRedirect,
+  useLocation,
+  useParams,
+  useRouter,
+} from "@tanstack/react-router"
 import { updateRegion } from "@lib/data/cart"
 import { HttpTypes } from "@medusajs/types"
 

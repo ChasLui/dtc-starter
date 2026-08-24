@@ -1,7 +1,7 @@
 import { Radio as RadioGroupOption } from "@headlessui/react"
 import { Text, clx } from "@modules/common/components/ui"
-import React, {  useContext, useMemo } from "react"
-import type {JSX} from "react";
+import React, { useContext, useMemo } from "react"
+import type { JSX } from "react"
 
 import Radio from "@modules/common/components/radio"
 
@@ -39,7 +39,7 @@ const PaymentContainer: React.FC<PaymentContainerProps> = ({
         {
           "border-ui-border-interactive":
             selectedPaymentOptionId === paymentProviderId,
-        }
+        },
       )}
     >
       <div className="flex items-center justify-between ">
@@ -115,7 +115,7 @@ export const StripeCardContainer = ({
               options={useOptions as StripeCardElementOptions}
               onChange={(e) => {
                 setCardBrand(
-                  e.brand && e.brand.charAt(0).toUpperCase() + e.brand.slice(1)
+                  e.brand && e.brand.charAt(0).toUpperCase() + e.brand.slice(1),
                 )
                 setError(e.error?.message || null)
                 setCardComplete(e.complete)

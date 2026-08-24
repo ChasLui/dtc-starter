@@ -3,7 +3,7 @@ import OrderDetailsTemplate from "@modules/order/templates/order-details-templat
 import { createFileRoute, notFound } from "@tanstack/react-router"
 
 export const Route = createFileRoute(
-  "/$countryCode/_main/account/orders/details/$id"
+  "/$countryCode/_main/account/orders/details/$id",
 )({
   loader: async ({ params }) => {
     const order = await retrieveOrder({ data: params.id }).catch(() => null)

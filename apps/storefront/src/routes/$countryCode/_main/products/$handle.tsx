@@ -5,9 +5,7 @@ import { HttpTypes } from "@medusajs/types"
 import ProductTemplate from "@modules/products/templates"
 import { createFileRoute, notFound } from "@tanstack/react-router"
 
-export const Route = createFileRoute(
-  "/$countryCode/_main/products/$handle"
-)({
+export const Route = createFileRoute("/$countryCode/_main/products/$handle")({
   validateSearch: (search: Record<string, unknown>) => ({
     v_id: typeof search.v_id === "string" ? search.v_id : undefined,
   }),
@@ -48,7 +46,7 @@ export const Route = createFileRoute(
 
 function getImagesForVariant(
   product: HttpTypes.StoreProduct,
-  selectedVariantId?: string
+  selectedVariantId?: string,
 ) {
   if (!selectedVariantId || !product.variants) {
     return product.images

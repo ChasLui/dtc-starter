@@ -20,7 +20,7 @@ export const listProducts = createServerFn({ method: "GET" })
       queryParams?: ProductListQueryParams
       countryCode?: string
       regionId?: string
-    }) => d
+    }) => d,
   )
   .handler(
     async ({
@@ -71,7 +71,7 @@ export const listProducts = createServerFn({ method: "GET" })
               ...queryParams,
             },
             headers,
-          }
+          },
         )
         .then(({ products, count }) => {
           const nextPage = count > offset + limit ? pageParam + 1 : null
@@ -85,7 +85,7 @@ export const listProducts = createServerFn({ method: "GET" })
             queryParams,
           }
         })
-    }
+    },
   )
 
 /**
@@ -100,11 +100,17 @@ export const listProductsWithSort = createServerFn({ method: "GET" })
       sortBy?: SortOptions
       countryCode: string
       optionValueIds?: OptionValueIds
-    }) => d
+    }) => d,
   )
   .handler(
     async ({
-      data: { page = 0, queryParams, sortBy = "created_at", countryCode, optionValueIds },
+      data: {
+        page = 0,
+        queryParams,
+        sortBy = "created_at",
+        countryCode,
+        optionValueIds,
+      },
     }): Promise<{
       response: { products: HttpTypes.StoreProduct[]; count: number }
       nextPage: number | null
@@ -112,7 +118,7 @@ export const listProductsWithSort = createServerFn({ method: "GET" })
     }> => {
       const limit = queryParams?.limit || 12
       const optionFilters = Array.from(
-        new Set((optionValueIds || []).filter(Boolean))
+        new Set((optionValueIds || []).filter(Boolean)),
       )
 
       const {
@@ -135,9 +141,13 @@ export const listProductsWithSort = createServerFn({ method: "GET" })
 
       const filteredCount = products.length
 
-      const nextPage = filteredCount > pageParam + limit ? pageParam + limit : null
+      const nextPage =
+        filteredCount > pageParam + limit ? pageParam + limit : null
 
-      const paginatedProducts = sortedProducts.slice(pageParam, pageParam + limit)
+      const paginatedProducts = sortedProducts.slice(
+        pageParam,
+        pageParam + limit,
+      )
 
       return {
         response: {
@@ -147,5 +157,5 @@ export const listProductsWithSort = createServerFn({ method: "GET" })
         nextPage,
         queryParams,
       }
-    }
+    },
   )

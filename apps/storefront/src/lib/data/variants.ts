@@ -24,7 +24,7 @@ export const retrieveVariant = createServerFn({ method: "GET" })
             fields: "*images",
           },
           headers,
-        }
+        },
       )
       .then(({ variant }) => variant)
       .catch(() => null)

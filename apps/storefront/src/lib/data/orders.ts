@@ -26,31 +26,32 @@ export const retrieveOrder = createServerFn({ method: "GET" })
 
 export const listOrders = createServerFn({ method: "GET" })
   .validator(
-    (d: { limit?: number; offset?: number; filters?: Record<string, unknown> }) =>
-      d
+    (d: {
+      limit?: number
+      offset?: number
+      filters?: Record<string, unknown>
+    }) => d,
   )
-  .handler(
-    async ({ data: { limit = 10, offset = 0, filters } }) => {
-      const headers = {
-        ...(await getAuthHeaders()),
-      }
-
-      return sdk.client
-        .fetch<HttpTypes.StoreOrderListResponse>(`/store/orders`, {
-          method: "GET",
-          query: {
-            limit,
-            offset,
-            order: "-created_at",
-            fields: "*items,+items.metadata,*items.variant,*items.product",
-            ...filters,
-          },
-          headers,
-        })
-        .then(({ orders }) => orders)
-        .catch((err) => medusaError(err))
+  .handler(async ({ data: { limit = 10, offset = 0, filters } }) => {
+    const headers = {
+      ...(await getAuthHeaders()),
     }
-  )
+
+    return sdk.client
+      .fetch<HttpTypes.StoreOrderListResponse>(`/store/orders`, {
+        method: "GET",
+        query: {
+          limit,
+          offset,
+          order: "-created_at",
+          fields: "*items,+items.metadata,*items.variant,*items.product",
+          ...filters,
+        },
+        headers,
+      })
+      .then(({ orders }) => orders)
+      .catch((err) => medusaError(err))
+  })
 
 export const createTransferRequest = createServerFn({ method: "POST" })
   .validator((formData: FormData) => formData)
@@ -70,7 +71,7 @@ export const createTransferRequest = createServerFn({ method: "POST" })
         {
           fields: "id, email",
         },
-        headers
+        headers,
       )
       .then(({ order }) => ({ success: true, error: null, order }))
       .catch((err) => ({ success: false, error: err.message, order: null }))

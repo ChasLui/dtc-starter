@@ -9,7 +9,7 @@ export const getOnboardingState = createServerFn({ method: "GET" }).handler(
     } catch {
       return false
     }
-  }
+  },
 )
 
 export const resetOnboardingState = createServerFn({ method: "POST" })

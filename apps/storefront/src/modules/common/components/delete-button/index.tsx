@@ -31,7 +31,7 @@ const DeleteButton = ({
     <div
       className={clx(
         "flex items-center justify-between text-small-regular",
-        className
+        className,
       )}
     >
       <button

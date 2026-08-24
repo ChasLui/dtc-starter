@@ -17,7 +17,7 @@ export const listCategories = createServerFn({ method: "GET" })
             limit,
             ...query,
           },
-        }
+        },
       )
       .then(({ product_categories }) => product_categories)
   })
@@ -35,7 +35,7 @@ export const getCategoryByHandle = createServerFn({ method: "GET" })
             fields: "*category_children, *products",
             handle,
           },
-        }
+        },
       )
       .then(({ product_categories }) => product_categories[0])
   })

@@ -9,7 +9,7 @@ export const Route = createFileRoute("/$countryCode/_main/categories/$")({
     sortBy: (search.sortBy as SortOptions) ?? ("created_at" as SortOptions),
     page: typeof search.page === "string" ? parseInt(search.page) || 1 : 1,
     optionValueIds: parseOptionValueIds(
-      search as Record<string, string | string[] | undefined>
+      search as Record<string, string | string[] | undefined>,
     ),
   }),
   loader: async ({ params }) => {

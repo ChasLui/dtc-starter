@@ -32,7 +32,7 @@ async function requestVerificationEmail(email: string, token: string) {
     },
     {
       authorization: `Bearer ${token}`,
-    }
+    },
   )
 }
 
@@ -125,7 +125,7 @@ export const login = createServerFn({ method: "POST" })
 // email verification is enabled.
 async function completeLogin(
   email: string,
-  password: string
+  password: string,
 ): Promise<CustomerAuthState> {
   let result: Awaited<ReturnType<typeof sdk.auth.login>>
 
@@ -190,7 +190,7 @@ async function completeLogin(
           phone: pending?.phone,
         },
         {},
-        { authorization: `Bearer ${token}` }
+        { authorization: `Bearer ${token}` },
       )
 
       token = (await sdk.auth.login("customer", "emailpass", {
@@ -229,7 +229,7 @@ export const confirmEmailVerification = createServerFn({ method: "POST" })
       } catch (error) {
         return { success: false, error: String(error) }
       }
-    }
+    },
   )
 
 export const signout = createServerFn({ method: "POST" })
@@ -259,7 +259,7 @@ export const transferCart = createServerFn({ method: "POST" }).handler(
     await sdk.store.cart.transferCart(cartId, {}, headers)
 
     return { success: true }
-  }
+  },
 )
 
 export const addCustomerAddress = createServerFn({ method: "POST" })
@@ -300,7 +300,7 @@ export const addCustomerAddress = createServerFn({ method: "POST" })
         .catch((err) => {
           return { success: false, error: err.toString() }
         })
-    }
+    },
   )
 
 export const deleteCustomerAddress = createServerFn({ method: "POST" })
@@ -357,5 +357,5 @@ export const updateCustomerAddress = createServerFn({ method: "POST" })
         .catch((err) => {
           return { success: false, error: err.toString() }
         })
-    }
+    },
   )

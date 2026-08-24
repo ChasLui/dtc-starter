@@ -5,7 +5,7 @@ import { createFileRoute, notFound } from "@tanstack/react-router"
 export const Route = createFileRoute("/$countryCode/_main/account/")({
   loader: async () => {
     const customer = await import("@lib/data/customer").then((m) =>
-      m.retrieveCustomer()
+      m.retrieveCustomer(),
     )
     const orders = (await listOrders({ data: {} }).catch(() => null)) || null
 

@@ -13,7 +13,7 @@ export const listRegions = createServerFn({ method: "GET" }).handler(
         method: "GET",
       })
       .then(({ regions }) => regions)
-  }
+  },
 )
 
 export const retrieveRegion = createServerFn({ method: "GET" })
@@ -104,5 +104,5 @@ export const getCountryCode = createServerFn({ method: "GET" }).handler(
     }
 
     return countryCode || DEFAULT_REGION
-  }
+  },
 )

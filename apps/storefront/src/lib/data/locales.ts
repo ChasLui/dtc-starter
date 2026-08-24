@@ -18,5 +18,5 @@ export const listLocales = createServerFn({ method: "GET" }).handler(
       })
       .then(({ locales }) => locales)
       .catch(() => null)
-  }
+  },
 )

@@ -30,11 +30,7 @@ const OnboardingCta = ({ orderId }: { orderId: string }) => {
         <Text className="text-ui-fg-subtle text-small-regular">
           You can now complete setting up your store in the admin.
         </Text>
-        <Button
-          className="w-fit"
-          size="large"
-          onClick={handleCompleteSetup}
-        >
+        <Button className="w-fit" size="large" onClick={handleCompleteSetup}>
           Complete setup in admin
         </Button>
       </div>

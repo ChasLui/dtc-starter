@@ -44,7 +44,7 @@ const RefinementList = ({
         replace: true,
       })
     },
-    [location, router]
+    [location, router],
   )
 
   const setQueryParams = (name: string, value: string) =>
@@ -53,16 +53,16 @@ const RefinementList = ({
   const selectedOptionValueIds = useMemo(
     () =>
       parseOptionValueIds(
-        location.search as Record<string, string | string[] | undefined>
+        location.search as Record<string, string | string[] | undefined>,
       ),
-    [location.search]
+    [location.search],
   )
 
   const setOptionValueIds = (valueIds: string[]) =>
     updateQueryParams((params) => {
       params.delete(OPTION_VALUE_QUERY_KEY)
       valueIds.forEach((valueId) =>
-        params.append(OPTION_VALUE_QUERY_KEY, valueId)
+        params.append(OPTION_VALUE_QUERY_KEY, valueId),
       )
     })
 

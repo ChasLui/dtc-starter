@@ -39,7 +39,7 @@ const OptionSelect: React.FC<OptionSelectProps> = ({
                   "border-ui-border-interactive": v === current,
                   "hover:shadow-elevation-card-rest transition-shadow ease-in-out duration-150":
                     v !== current,
-                }
+                },
               )}
               disabled={disabled}
               data-testid="option-button"

@@ -11,7 +11,6 @@ import CountrySelect from "../country-select"
 import LanguageSelect from "../language-select"
 import { Locale } from "@lib/data/locales"
 
-
 const SideMenuItems = {
   Home: "/",
   Store: "/store",
@@ -103,7 +102,7 @@ const SideMenu = ({ regions, locales, currentLocale }: SideMenuProps) => {
                           <ArrowRightMini
                             className={clx(
                               "transition-transform duration-150",
-                              languageToggleState.state ? "-rotate-90" : ""
+                              languageToggleState.state ? "-rotate-90" : "",
                             )}
                           />
                         </div>
@@ -122,7 +121,7 @@ const SideMenu = ({ regions, locales, currentLocale }: SideMenuProps) => {
                         <ArrowRightMini
                           className={clx(
                             "transition-transform duration-150",
-                            countryToggleState.state ? "-rotate-90" : ""
+                            countryToggleState.state ? "-rotate-90" : "",
                           )}
                         />
                       </div>

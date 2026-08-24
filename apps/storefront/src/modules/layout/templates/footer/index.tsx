@@ -1,11 +1,11 @@
-import { useStorefront } from "@lib/context/storefront-context";
-import { Text, clx } from "@modules/common/components/ui";
+import { useStorefront } from "@lib/context/storefront-context"
+import { Text, clx } from "@modules/common/components/ui"
 
-import LocalizedClientLink from "@modules/common/components/localized-client-link";
-import MedusaCTA from "@modules/layout/components/medusa-cta";
+import LocalizedClientLink from "@modules/common/components/localized-client-link"
+import MedusaCTA from "@modules/layout/components/medusa-cta"
 
 export default function Footer() {
-  const { collections, categories } = useStorefront();
+  const { collections, categories } = useStorefront()
 
   return (
     <footer className="border-t border-ui-border-base w-full">
@@ -31,7 +31,7 @@ export default function Footer() {
                 >
                   {categories?.slice(0, 6).map((c) => {
                     if (c.parent_category) {
-                      return;
+                      return
                     }
 
                     const children =
@@ -39,7 +39,7 @@ export default function Footer() {
                         name: child.name,
                         handle: child.handle,
                         id: child.id,
-                      })) || null;
+                      })) || null
 
                     return (
                       <li
@@ -49,7 +49,7 @@ export default function Footer() {
                         <LocalizedClientLink
                           className={clx(
                             "hover:text-ui-fg-base",
-                            children && "txt-small-plus"
+                            children && "txt-small-plus",
                           )}
                           href={`/categories/${c.handle}`}
                           data-testid="category-link"
@@ -73,7 +73,7 @@ export default function Footer() {
                           </ul>
                         )}
                       </li>
-                    );
+                    )
                   })}
                 </ul>
               </div>
@@ -88,7 +88,7 @@ export default function Footer() {
                     "grid grid-cols-1 gap-2 text-ui-fg-subtle txt-small",
                     {
                       "grid-cols-2": (collections?.length || 0) > 3,
-                    }
+                    },
                   )}
                 >
                   {collections?.slice(0, 6).map((c) => (
@@ -149,5 +149,5 @@ export default function Footer() {
         </div>
       </div>
     </footer>
-  );
+  )
 }

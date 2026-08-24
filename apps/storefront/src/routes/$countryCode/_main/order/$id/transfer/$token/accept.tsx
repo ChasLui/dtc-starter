@@ -4,7 +4,7 @@ import TransferImage from "@modules/order/components/transfer-image"
 import { createFileRoute } from "@tanstack/react-router"
 
 export const Route = createFileRoute(
-  "/$countryCode/_main/order/$id/transfer/$token/accept"
+  "/$countryCode/_main/order/$id/transfer/$token/accept",
 )({
   loader: async ({ params }) => {
     const { success, error } = await acceptTransferRequest({

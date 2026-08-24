@@ -23,7 +23,7 @@ function checkEnvVariables() {
     })
 
     console.error(
-      "\nPlease set these variables in your .env file or environment before starting the application.\n"
+      "\nPlease set these variables in your .env file or environment before starting the application.\n",
     )
 
     process.exit(1)

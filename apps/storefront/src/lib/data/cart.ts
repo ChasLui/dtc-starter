@@ -3,12 +3,7 @@ import medusaError from "@lib/util/medusa-error"
 import { HttpTypes } from "@medusajs/types"
 import { createServerFn } from "@tanstack/react-start"
 import { redirect } from "@tanstack/react-router"
-import {
-  getAuthHeaders,
-  getCartId,
-  removeCartId,
-  setCartId,
-} from "./cookies"
+import { getAuthHeaders, getCartId, removeCartId, setCartId } from "./cookies"
 import { getRegion } from "./regions"
 import { getLocale } from "./locale-actions"
 
@@ -67,7 +62,7 @@ export const getOrSetCart = createServerFn({ method: "GET" })
       const cartResp = await sdk.store.cart.create(
         { region_id: region.id, locale: locale || undefined },
         {},
-        headers
+        headers,
       )
       cart = cartResp.cart
 
@@ -75,7 +70,12 @@ export const getOrSetCart = createServerFn({ method: "GET" })
     }
 
     if (cart && cart?.region_id !== region.id) {
-      await sdk.store.cart.update(cart.id, { region_id: region.id }, {}, headers)
+      await sdk.store.cart.update(
+        cart.id,
+        { region_id: region.id },
+        {},
+        headers,
+      )
     }
 
     return cart
@@ -87,7 +87,9 @@ export const updateCart = createServerFn({ method: "POST" })
     const cartId = await getCartId()
 
     if (!cartId) {
-      throw new Error("No existing cart found, please create one before updating")
+      throw new Error(
+        "No existing cart found, please create one before updating",
+      )
     }
 
     const headers = {
@@ -102,7 +104,7 @@ export const updateCart = createServerFn({ method: "POST" })
 
 export const addToCart = createServerFn({ method: "POST" })
   .validator(
-    (d: { variantId: string; quantity: number; countryCode: string }) => d
+    (d: { variantId: string; quantity: number; countryCode: string }) => d,
   )
   .handler(async ({ data: { variantId, quantity, countryCode } }) => {
     if (!variantId) {
@@ -126,7 +128,7 @@ export const addToCart = createServerFn({ method: "POST" })
         quantity,
       },
       {},
-      headers
+      headers,
     )
 
     return { success: true }
@@ -149,7 +151,13 @@ export const updateLineItem = createServerFn({ method: "POST" })
       ...(await getAuthHeaders()),
     }
 
-    await sdk.store.cart.updateLineItem(cartId, lineId, { quantity }, {}, headers)
+    await sdk.store.cart.updateLineItem(
+      cartId,
+      lineId,
+      { quantity },
+      {},
+      headers,
+    )
 
     return { success: true }
   })
@@ -194,7 +202,7 @@ export const initiatePaymentSession = createServerFn({ method: "POST" })
     (d: {
       cart: HttpTypes.StoreCart
       data: HttpTypes.StoreInitializePaymentSession
-    }) => d
+    }) => d,
   )
   .handler(async ({ data: { cart, data } }) => {
     const headers = {
@@ -367,5 +375,5 @@ export const listCartOptions = createServerFn({ method: "GET" }).handler(
       query: { cart_id: cartId },
       headers,
     })
-  }
+  },
 )

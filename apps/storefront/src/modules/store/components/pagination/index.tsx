@@ -35,7 +35,7 @@ export function Pagination({
   const renderPageButton = (
     p: number,
     label: string | number,
-    isCurrent: boolean
+    isCurrent: boolean,
   ) => (
     <button
       key={p}
@@ -67,19 +67,19 @@ export function Pagination({
       // Show all pages
       buttons.push(
         ...arrayRange(1, totalPages).map((p) =>
-          renderPageButton(p, p, p === page)
-        )
+          renderPageButton(p, p, p === page),
+        ),
       )
     } else {
       // Handle different cases for displaying pages and ellipses
       if (page <= 4) {
         // Show 1, 2, 3, 4, 5, ..., lastpage
         buttons.push(
-          ...arrayRange(1, 5).map((p) => renderPageButton(p, p, p === page))
+          ...arrayRange(1, 5).map((p) => renderPageButton(p, p, p === page)),
         )
         buttons.push(renderEllipsis("ellipsis1"))
         buttons.push(
-          renderPageButton(totalPages, totalPages, totalPages === page)
+          renderPageButton(totalPages, totalPages, totalPages === page),
         )
       } else if (page >= totalPages - 3) {
         // Show 1, ..., lastpage - 4, lastpage - 3, lastpage - 2, lastpage - 1, lastpage
@@ -87,8 +87,8 @@ export function Pagination({
         buttons.push(renderEllipsis("ellipsis2"))
         buttons.push(
           ...arrayRange(totalPages - 4, totalPages).map((p) =>
-            renderPageButton(p, p, p === page)
-          )
+            renderPageButton(p, p, p === page),
+          ),
         )
       } else {
         // Show 1, ..., page - 1, page, page + 1, ..., lastpage
@@ -96,12 +96,12 @@ export function Pagination({
         buttons.push(renderEllipsis("ellipsis3"))
         buttons.push(
           ...arrayRange(page - 1, page + 1).map((p) =>
-            renderPageButton(p, p, p === page)
-          )
+            renderPageButton(p, p, p === page),
+          ),
         )
         buttons.push(renderEllipsis("ellipsis4"))
         buttons.push(
-          renderPageButton(totalPages, totalPages, totalPages === page)
+          renderPageButton(totalPages, totalPages, totalPages === page),
         )
       }
     }

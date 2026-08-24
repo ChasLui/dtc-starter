@@ -21,6 +21,8 @@
     "lint": "bun run lint:backend && bun run lint:storefront",
     "lint:backend": "bun run --cwd apps/backend lint",
     "lint:storefront": "bun run --cwd apps/storefront lint",
+    "fmt": "oxfmt",
+    "fmt:check": "oxfmt --check",
     "test": "bun run test:unit && bun run test:integration:modules && bun run test:integration:http",
     "test:unit": "bun run --cwd apps/backend test:unit --passWithNoTests",
     "test:integration:modules": "bun run --cwd apps/backend test:integration:modules --passWithNoTests",
@@ -34,8 +36,7 @@
   "devDependencies": {
     "@medusajs/eslint-plugin": "2.19.0",
     "concurrently": "^9.1.2",
-    "eslint": "^9.39.4",
-    "jiti": "^2.7.0",
-    "prettier": "^3.2.5"
+    "oxfmt": "^0.64.0",
+    "oxlint": "^1.79.0"
   }
 }

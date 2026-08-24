@@ -19,7 +19,7 @@ export const listCartShippingMethods = createServerFn({ method: "GET" })
             cart_id: cartId,
           },
           headers,
-        }
+        },
       )
       .then(({ shipping_options }) => shipping_options)
       .catch(() => {
@@ -31,11 +31,8 @@ export const calculatePriceForShippingOption = createServerFn({
   method: "POST",
 })
   .validator(
-    (d: {
-      optionId: string
-      cartId: string
-      data?: Record<string, unknown>
-    }) => d
+    (d: { optionId: string; cartId: string; data?: Record<string, unknown> }) =>
+      d,
   )
   .handler(async ({ data: { optionId, cartId, data } }) => {
     const headers = {
@@ -55,7 +52,7 @@ export const calculatePriceForShippingOption = createServerFn({
           method: "POST",
           body,
           headers,
-        }
+        },
       )
       .then(({ shipping_option }) => shipping_option)
       .catch((_e) => {

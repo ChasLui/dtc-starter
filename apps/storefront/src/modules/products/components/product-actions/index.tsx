@@ -7,11 +7,7 @@ import { Button } from "@modules/common/components/ui"
 import Divider from "@modules/common/components/divider"
 import OptionSelect from "@modules/products/components/product-actions/option-select"
 import { isEqual } from "lodash"
-import {
-  useLocation,
-  useParams,
-  useRouter,
-} from "@tanstack/react-router"
+import { useLocation, useParams, useRouter } from "@tanstack/react-router"
 import { useEffect, useMemo, useRef, useState } from "react"
 import ProductPrice from "../product-price"
 import MobileActions from "./mobile-actions"
@@ -23,7 +19,7 @@ type ProductActionsProps = {
 }
 
 const optionsAsKeymap = (
-  variantOptions: HttpTypes.StoreProductVariant["options"]
+  variantOptions: HttpTypes.StoreProductVariant["options"],
 ) => {
   return variantOptions?.reduce((acc: Record<string, string>, varopt) => {
     if (varopt.option_id) acc[varopt.option_id] = varopt.value
@@ -41,7 +37,9 @@ export default function ProductActions({
 
   const [options, setOptions] = useState<Record<string, string | undefined>>({})
   const [isAdding, setIsAdding] = useState(false)
-  const { countryCode } = useParams({ strict: false }) as { countryCode: string }
+  const { countryCode } = useParams({ strict: false }) as {
+    countryCode: string
+  }
 
   // If there is only 1 variant, preselect the options
   useEffect(() => {
@@ -97,7 +95,7 @@ export default function ProductActions({
       search: Object.fromEntries(params) as never,
       replace: true,
     })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // oxlint-disable-next-line react/exhaustive-deps
   }, [selectedVariant, isValidVariant])
 
   // check if the selected variant is in stock
@@ -190,8 +188,8 @@ export default function ProductActions({
           {!selectedVariant && !options
             ? "Select variant"
             : !inStock || !isValidVariant
-            ? "Out of stock"
-            : "Add to cart"}
+              ? "Out of stock"
+              : "Add to cart"}
         </Button>
         <MobileActions
           product={product}

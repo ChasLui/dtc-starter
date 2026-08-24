@@ -6,7 +6,12 @@ import { retrieveCustomer } from "@lib/data/customer"
 import { getLocale } from "@lib/data/locale-actions"
 import { listLocales } from "@lib/data/locales"
 import { getCountryCode, getRegion, listRegions } from "@lib/data/regions"
-import { Outlet, createFileRoute, notFound, redirect } from "@tanstack/react-router"
+import {
+  Outlet,
+  createFileRoute,
+  notFound,
+  redirect,
+} from "@tanstack/react-router"
 
 export const Route = createFileRoute("/$countryCode")({
   beforeLoad: async ({ params }) => {

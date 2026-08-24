@@ -22,7 +22,8 @@ Medusa DTC Starter — a bun workspace monorepo containing a Medusa backend (`@m
 │   │       ├── subscribers/      # Event subscribers
 │   │       └── workflows/        # Workflows and workflow steps
 │   └── storefront/               # OPTIONAL storefront
-├── eslint.config.ts              # Root ESLint: @medusajs/eslint-plugin recommended
+├── .oxlintrc.json                # Root oxlint config: @medusajs/eslint-plugin via jsPlugins
+├── .oxfmtrc.json                 # oxfmt config (semi: false, printWidth: 80)
 ```
 
 **`apps/storefront` is optional and may not exist.** It is skipped when the user chooses not to install it. Before running any storefront command, referencing storefront files, or assuming a full-stack change is possible, check that `apps/storefront/` exists. If it doesn't, the project is backend-only — do not scaffold it or suggest it was deleted by mistake.
@@ -65,9 +66,16 @@ Run from the repo root unless noted. There is no task runner: root scripts deleg
 ### Lint
 
 ```bash
-<pm> run lint                          # lint both apps
-cd apps/backend && <pm> run lint       # medusa lint
-cd apps/storefront && <pm> run lint    # eslint
+<pm> run lint                          # lint both apps (oxlint)
+cd apps/backend && <pm> run lint       # oxlint — root .oxlintrc.json (loads @medusajs/eslint-plugin via jsPlugins)
+cd apps/storefront && <pm> run lint    # oxlint — apps/storefront/.oxlintrc.json
+```
+
+### Format
+
+```bash
+<pm> run fmt                           # oxfmt — format the repo (skips *.md, *.yaml, bun.lock, src/routeTree.gen.ts)
+<pm> run fmt:check                     # oxfmt --check — fail if anything is unformatted
 ```
 
 ### Test (backend only; the storefront has no test suite)
@@ -122,8 +130,8 @@ claude mcp add --transport http medusa https://docs.medusajs.com/mcp # or agent 
 
 ## Code Style
 
-- **The backend must satisfy `@medusajs/eslint-plugin`'s recommended config** (`eslint.config.ts`). Its rules encode Medusa framework requirements — correct route/workflow/module shapes, not just cosmetics — so a lint failure usually means the code is actually wrong, not just badly formatted. Never disable a `@medusajs/*` rule to make lint pass; fix the code.
-- No semicolons. Double quotes, 2-space indent.
+- **The backend must satisfy `@medusajs/eslint-plugin`'s recommended rules**, enforced through `oxlint`: the root `.oxlintrc.json` loads the plugin via `jsPlugins` and enables its full rule set (workflows, API routes, modules, links, subscribers, jobs, admin). Those rules encode Medusa framework requirements — correct route/workflow/module shapes, not just cosmetics — so a lint failure usually means the code is actually wrong, not just badly formatted. Never disable a `@medusajs/*` rule to make lint pass; fix the code.
+- Formatting is `oxfmt` (`.oxfmtrc.json`): no semicolons, double quotes, 2-space indent, printWidth 80. Run `<pm> run fmt` after editing; never reformat files oxfmt is configured to skip (`*.md`, `*.yaml`, `bun.lock`, `src/routeTree.gen.ts`).
 - Files: kebab-case. Types/classes: PascalCase. Functions/variables: camelCase. DB columns: snake_case.
 - No emojis in code, comments, or commit messages.
 
@@ -142,7 +150,8 @@ claude mcp add --transport http medusa https://docs.medusajs.com/mcp # or agent 
 - Writing raw SQL or importing DB clients directly in the backend instead of going through module services / workflows.
 - Calling the Medusa API from the storefront without `NEXT_PUBLIC_MEDUSA_PUBLISHABLE_KEY`; requests fail with a publishable-key error, not an obvious 401.
 - Running the test task without a reachable PostgreSQL — integration suites need a live DB.
-- Silencing `@medusajs/*` ESLint rules instead of fixing the underlying pattern.
+- Silencing `@medusajs/*` oxlint rules instead of fixing the underlying pattern.
+- Forgetting that backend `build`/`dev` run `medusa build --no-lint` / `medusa develop --no-lint`: Medusa's built-in ESLint step is disabled because linting moved to oxlint.
 
 ## Off-Limits
 

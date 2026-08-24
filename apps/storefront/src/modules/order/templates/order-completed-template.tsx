@@ -17,7 +17,6 @@ export default function OrderCompletedTemplate({
   order,
   isOnboarding = false,
 }: OrderCompletedTemplateProps & { isOnboarding?: boolean }) {
-
   return (
     <div className="py-6 min-h-[calc(100vh-64px)]">
       <div className="content-container flex flex-col justify-center items-center gap-y-10 max-w-4xl h-full w-full">

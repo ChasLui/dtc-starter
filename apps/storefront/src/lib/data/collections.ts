@@ -10,7 +10,7 @@ export const retrieveCollection = createServerFn({ method: "GET" })
         `/store/collections/${id}`,
         {
           method: "GET",
-        }
+        },
       )
       .then(({ collection }) => collection)
   })
@@ -20,7 +20,10 @@ export const listCollections = createServerFn({ method: "GET" })
   .handler(
     async ({
       data: queryParams,
-    }): Promise<{ collections: HttpTypes.StoreCollection[]; count: number }> => {
+    }): Promise<{
+      collections: HttpTypes.StoreCollection[]
+      count: number
+    }> => {
       queryParams.limit = queryParams.limit || "100"
       queryParams.offset = queryParams.offset || "0"
 
@@ -29,10 +32,10 @@ export const listCollections = createServerFn({ method: "GET" })
           "/store/collections",
           {
             query: queryParams,
-          }
+          },
         )
         .then(({ collections }) => ({ collections, count: collections.length }))
-    }
+    },
   )
 
 export const getCollectionByHandle = createServerFn({ method: "GET" })

@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useActionState, useEffect } from "react";
+import React, { useActionState, useEffect } from "react"
 
 import Input from "@modules/common/components/input"
 
@@ -17,7 +17,7 @@ const ProfileName: React.FC<MyInformationProps> = ({ customer }) => {
 
   const updateCustomerName = async (
     _currentState: Record<string, unknown>,
-    formData: FormData
+    formData: FormData,
   ) => {
     const customer = {
       first_name: formData.get("first_name") as string,

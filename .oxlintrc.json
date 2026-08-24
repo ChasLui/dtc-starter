@@ -1,0 +1,221 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": [],
+  "categories": {
+    "correctness": "off"
+  },
+  "env": {
+    "builtin": true
+  },
+  "ignorePatterns": [
+    "**/.medusa/**",
+    "**/.yalc/**",
+    "**/dist/**",
+    "**/build/**",
+    "**/node_modules/**",
+    "**/coverage/**",
+    "**/.cache/**",
+    "**/*.generated.ts",
+    "**/__tests__/**",
+    "**/__fixtures__/**",
+    "**/__mocks__/**",
+    "**/integration-tests/**",
+    "**/*.spec.*",
+    "**/*.test.*",
+    "**/apps/storefront/**"
+  ],
+  "overrides": [
+    {
+      "files": ["**/*.{ts,js}"],
+      "rules": {
+        "@medusajs/no-async-workflow-constructor": "error",
+        "@medusajs/no-conditional-expressions-in-workflow": "error",
+        "@medusajs/no-console-log-in-workflow": "warn",
+        "@medusajs/no-direct-variable-mutation-in-workflow": "error",
+        "@medusajs/no-duplicate-step-id-in-workflow": "error",
+        "@medusajs/no-if-in-workflow-constructor": "error",
+        "@medusajs/no-loops-in-workflow": "error",
+        "@medusajs/no-new-date-in-workflow": "error",
+        "@medusajs/no-spread-in-workflow": "error",
+        "@medusajs/no-throw-in-transform": "error",
+        "@medusajs/no-try-catch-in-workflow": "error",
+        "@medusajs/no-wildcard-with-specific-fields": "warn",
+        "@medusajs/import-from-framework-not-internal": "warn",
+        "@medusajs/no-mikroorm-direct-import": "warn",
+        "@medusajs/use-medusa-error-not-generic-error": "warn",
+        "@medusajs/link-create-keys-modules-enum": "warn",
+        "@medusajs/prefer-container-registration-keys": "warn",
+        "@medusajs/prefer-link-over-remote-link": "warn",
+        "@medusajs/prefer-modules-enum": "warn",
+        "@medusajs/prices-in-major-units": "warn",
+        "@medusajs/step-id-kebab-case": "warn",
+        "@medusajs/step-must-return-step-response": "error",
+        "@medusajs/workflow-id-matches-export-or-filename": "warn",
+        "@medusajs/workflow-must-return-workflow-response": "error",
+        "@medusajs/zod-import-source": "warn"
+      },
+      "jsPlugins": ["@medusajs/eslint-plugin"]
+    },
+    {
+      "files": ["src/api/**/*.{ts,tsx}", "**/api/**/*.{ts,tsx}"],
+      "rules": {
+        "@medusajs/authenticate-flag-name-and-type": "error",
+        "@medusajs/no-deprecated-remote-query-config": "warn",
+        "@medusajs/no-service-mutations-in-api-route": "warn",
+        "@medusajs/route-file-naming": "error",
+        "@medusajs/route-handler-exports-uppercase": "error",
+        "@medusajs/route-params-must-be-defined": "error"
+      },
+      "jsPlugins": ["@medusajs/eslint-plugin"]
+    },
+    {
+      "files": [
+        "src/api/**/*.{ts,tsx}",
+        "**/api/**/*.{ts,tsx}",
+        "src/admin/routes/**/*.{ts,tsx}",
+        "**/admin/routes/**/*.{ts,tsx}"
+      ],
+      "rules": {
+        "@medusajs/route-dynamic-folder-syntax": "error"
+      },
+      "jsPlugins": ["@medusajs/eslint-plugin"]
+    },
+    {
+      "files": ["**/middleware.{ts,js}", "**/middlewares.{ts,js}"],
+      "rules": {
+        "@medusajs/middleware-must-call-next": "warn",
+        "@medusajs/middlewares-file-location-and-name": "error",
+        "@medusajs/no-trailing-slash-in-route-matcher": "warn"
+      },
+      "jsPlugins": ["@medusajs/eslint-plugin"]
+    },
+    {
+      "files": ["src/modules/**/*.{ts,tsx}", "**/modules/**/*.{ts,tsx}"],
+      "rules": {
+        "@medusajs/medusa-context-on-context-param": "warn",
+        "@medusajs/service-constructor-must-call-super": "error",
+        "@medusajs/service-methods-must-be-async": "error",
+        "@medusajs/use-inject-manager-on-public-methods": "warn"
+      },
+      "jsPlugins": ["@medusajs/eslint-plugin"]
+    },
+    {
+      "files": ["src/modules/**/index.{ts,js}", "**/modules/**/index.{ts,js}"],
+      "rules": {
+        "@medusajs/module-name-snake-case": "error"
+      },
+      "jsPlugins": ["@medusajs/eslint-plugin"]
+    },
+    {
+      "files": [
+        "src/modules/**/loaders/**/*.{ts,tsx,js,mjs,cjs}",
+        "**/modules/**/loaders/**/*.{ts,tsx,js,mjs,cjs}"
+      ],
+      "rules": {
+        "@medusajs/loader-must-be-exported-in-module-definition": "warn"
+      },
+      "jsPlugins": ["@medusajs/eslint-plugin"]
+    },
+    {
+      "files": [
+        "src/modules/**/models/**/*.{ts,js}",
+        "**/modules/**/models/**/*.{ts,js}"
+      ],
+      "rules": {
+        "@medusajs/data-model-table-name-snake-case": "warn",
+        "@medusajs/link-no-cross-module-relationship": "error",
+        "@medusajs/no-reserved-default-properties-in-model": "error",
+        "@medusajs/primary-key-required": "warn"
+      },
+      "jsPlugins": ["@medusajs/eslint-plugin"]
+    },
+    {
+      "files": [
+        "src/admin/**/*.{ts,tsx,js,jsx}",
+        "**/src/admin/**/*.{ts,tsx,js,jsx}"
+      ],
+      "rules": {
+        "@medusajs/admin-env-vars-import-meta": "warn",
+        "@medusajs/admin-no-medusa-utils-import": "error"
+      },
+      "jsPlugins": ["@medusajs/eslint-plugin"]
+    },
+    {
+      "files": [
+        "src/admin/widgets/**/*.{tsx,jsx}",
+        "**/admin/widgets/**/*.{tsx,jsx}",
+        "src/admin/routes/**/page.{tsx,jsx}",
+        "**/admin/routes/**/page.{tsx,jsx}"
+      ],
+      "rules": {
+        "@medusajs/admin-component-must-be-arrow-function": "error",
+        "@medusajs/widget-zone-must-be-string-literal": "error"
+      },
+      "jsPlugins": ["@medusajs/eslint-plugin"]
+    },
+    {
+      "files": [
+        "src/admin/widgets/**/*.{tsx,jsx}",
+        "**/admin/widgets/**/*.{tsx,jsx}"
+      ],
+      "rules": {
+        "@medusajs/widget-must-export-config": "error",
+        "@medusajs/widget-must-have-default-export": "error"
+      },
+      "jsPlugins": ["@medusajs/eslint-plugin"]
+    },
+    {
+      "files": [
+        "src/admin/routes/**/*.{tsx,jsx}",
+        "**/admin/routes/**/*.{tsx,jsx}"
+      ],
+      "rules": {
+        "@medusajs/ui-route-file-name-page-tsx": "error"
+      },
+      "jsPlugins": ["@medusajs/eslint-plugin"]
+    },
+    {
+      "files": [
+        "src/admin/routes/**/page.{tsx,jsx}",
+        "**/admin/routes/**/page.{tsx,jsx}"
+      ],
+      "rules": {
+        "@medusajs/no-config-on-dynamic-ui-route": "warn",
+        "@medusajs/ui-route-config-via-define-route-config": "warn",
+        "@medusajs/ui-route-must-have-default-export": "error"
+      },
+      "jsPlugins": ["@medusajs/eslint-plugin"]
+    },
+    {
+      "files": [
+        "src/links/**/*.{ts,tsx,js,mjs,cjs}",
+        "**/src/links/**/*.{ts,tsx,js,mjs,cjs}"
+      ],
+      "rules": {
+        "@medusajs/link-uses-linkable-properties": "warn",
+        "@medusajs/read-only-link-requires-field": "error"
+      },
+      "jsPlugins": ["@medusajs/eslint-plugin"]
+    },
+    {
+      "files": ["src/subscribers/*.{ts,js}", "**/src/subscribers/*.{ts,js}"],
+      "rules": {
+        "@medusajs/subscriber-config-export-required": "error",
+        "@medusajs/subscriber-default-export-must-be-async": "error",
+        "@medusajs/subscriber-default-export-required": "error",
+        "@medusajs/prefer-workflow-event-over-module-event": "warn"
+      },
+      "jsPlugins": ["@medusajs/eslint-plugin"]
+    },
+    {
+      "files": ["src/jobs/*.{ts,js}", "**/src/jobs/*.{ts,js}"],
+      "rules": {
+        "@medusajs/scheduled-job-config-required": "error",
+        "@medusajs/scheduled-job-default-export-async": "error",
+        "@medusajs/scheduled-job-default-export-required": "error",
+        "@medusajs/scheduled-job-schedule-valid-cron": "error"
+      },
+      "jsPlugins": ["@medusajs/eslint-plugin"]
+    }
+  ]
+}

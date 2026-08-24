@@ -1,0 +1,12 @@
+{
+  "semi": false,
+  "printWidth": 80,
+  "sortPackageJson": false,
+  "ignorePatterns": [
+    "**/*.md",
+    "**/*.yaml",
+    "**/*.yml",
+    "**/bun.lock",
+    "**/src/routeTree.gen.ts"
+  ]
+}

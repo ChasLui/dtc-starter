@@ -20,13 +20,13 @@ const medusaAccountId = getEnv("NEXT_PUBLIC_MEDUSA_PAYMENTS_ACCOUNT_ID")
 const stripePromise = stripeKey
   ? loadStripe(
       stripeKey,
-      medusaAccountId ? { stripeAccount: medusaAccountId } : undefined
+      medusaAccountId ? { stripeAccount: medusaAccountId } : undefined,
     )
   : null
 
 const PaymentWrapper: React.FC<PaymentWrapperProps> = ({ cart, children }) => {
   const paymentSession = cart.payment_collection?.payment_sessions?.find(
-    (s) => s.status === "pending"
+    (s) => s.status === "pending",
   )
 
   if (
