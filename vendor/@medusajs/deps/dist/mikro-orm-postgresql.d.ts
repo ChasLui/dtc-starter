@@ -1,1 +1,1 @@
-export * from "@mikro-orm/sqlite";
+export * from "@mikro-orm/sqlite"

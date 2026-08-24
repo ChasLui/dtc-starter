@@ -869,7 +869,20 @@ exports.SqliteConnection = SqliteConnection;
       ])
     }
 
-    // 6. knex `raw()` returns the rows array directly on SQLite (not
+    // 6. medusa build emits the admin bundle into `.medusa/server/public/admin`
+    //    (the tsconfig outDir) but the production serve looks in
+    //    `public/admin` — align the two.
+    if (pkgDir.endsWith("/medusa")) {
+      const adminLoader = path.join(pkgDir, "dist", "loaders", "admin.js")
+      patchFile(adminLoader, [
+        [
+          "        outDir: path_1.default.join(rootDirectory, utils_1.ADMIN_RELATIVE_OUTPUT_DIR),",
+          '        outDir: path_1.default.join(rootDirectory, ".medusa/server", utils_1.ADMIN_RELATIVE_OUTPUT_DIR),',
+        ],
+      ])
+    }
+
+    // 6b. knex `raw()` returns the rows array directly on SQLite (not
     //    `{ rows }` like pg) — normalize the destructured shape.
     if (pkgDir.endsWith("/product")) {
       const productRepo = path.join(

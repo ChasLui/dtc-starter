@@ -1,2 +1,2 @@
-export * from "pg";
+export * from "pg"
 //# sourceMappingURL=pg.d.ts.map
