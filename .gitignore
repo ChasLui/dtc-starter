@@ -16,6 +16,9 @@ node_modules
 # Testing
 coverage
 
+# TypeScript incremental build cache
+*.tsbuildinfo
+
 # Next.js
 **/.next/
 **/out/

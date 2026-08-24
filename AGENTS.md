@@ -34,15 +34,15 @@ Each app can have its own nested `AGENTS.md`; agents read the nearest one in the
 
 **The package manager is chosen at install time and is not fixed.** Detect it before running anything, in this order:
 
-1. The `packageManager` field in the root `package.json` (e.g. `"pnpm@10.11.1"`) — authoritative when present.
-2. The lockfile at the repo root: `pnpm-lock.yaml` → pnpm, `yarn.lock` → yarn, `package-lock.json` → npm.
+1. The `packageManager` field in the root `package.json` (e.g. `"bun@1.4.0"`) — authoritative when present.
+2. The lockfile at the repo root: `bun.lock` → bun, `pnpm-lock.yaml` → pnpm, `yarn.lock` → yarn, `package-lock.json` → npm.
 
 ```bash
 node -p "require('./package.json').packageManager ?? 'unset'"
-ls pnpm-lock.yaml yarn.lock package-lock.json bun.lock bun.lockb 2>/dev/null
+ls bun.lock pnpm-lock.yaml yarn.lock package-lock.json 2>/dev/null
 ```
 
-Use that manager for every command and never introduce a second lockfile. Below, `<pm>` means the detected manager. The `<pm> run <script>` and `<pm> exec <bin>` forms work across npm, pnpm, yarn, and bun; workspace-filter flags do not, so the per-app commands below `cd` into the app instead.
+Use that manager for every command and never introduce a second lockfile. Below, `<pm>` means the detected manager. The `<pm> run <script>` form works across npm, pnpm, yarn, and bun; for running a local binary use `<pm> exec <bin>` on npm/pnpm/yarn and `bunx <bin>` (or `bun run <bin>`) on bun. Workspace-filter flags differ per manager, so the per-app commands below `cd` into the app instead.
 
 ## Commands
 
@@ -148,7 +148,7 @@ claude mcp add --transport http medusa https://docs.medusajs.com/mcp # or agent 
 ## Off-Limits
 
 - `apps/backend/.medusa/`, `.next/`, `dist/`, `out/`, `.turbo/` — build output, excluded from the workspace and regenerated.
-- The lockfile (`pnpm-lock.yaml`, `yarn.lock`, `package-lock.json` — whichever this install produced) — never hand-edit or delete; change it only as a side effect of a package manager command.
+- The lockfile (`bun.lock`, `pnpm-lock.yaml`, `yarn.lock`, `package-lock.json` — whichever this install produced) — never hand-edit or delete; change it only as a side effect of a package manager command.
 - `.env` / `.env.local` — never commit, print, or copy secret values out of them. Edit `.env.template` instead when documenting a new variable.
 - Existing migrations in `src/modules/*/migrations/` — add a new migration rather than rewriting one that may already have run.
 - Don't run destructive DB commands (drops, `db:migrate --help`-style flags that reset state) against the user's database without explicit confirmation.
