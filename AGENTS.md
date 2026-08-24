@@ -11,7 +11,8 @@ Medusa DTC Starter — a bun workspace monorepo containing a Medusa backend (`@m
 ├── apps/
 │   ├── backend/                  # Medusa application (@dtc/backend)
 │   │   ├── medusa-config.ts      # Medusa config: DB URL, CORS, secrets, modules
-│   │   ├── integration-tests/    # setup.js (Jest setupFiles) and http/*.spec.ts suites
+│   │   ├── vitest.config.mts     # Vitest config (suites selected via TEST_TYPE)
+│   │   ├── integration-tests/    # setup.js (Vitest setupFiles) and http/*.spec.ts suites
 │   │   └── src/
 │   │       ├── admin/            # Admin dashboard extensions (widgets/, i18n/, routes)
 │   │       ├── api/              # API routes: api/store/*, api/admin/* (file-based)
@@ -87,7 +88,7 @@ cd apps/backend && <pm> run test:integration:modules       # **/src/modules/*/__
 cd apps/backend && <pm> run test:integration:http          # **/integration-tests/http/*.spec.ts
 ```
 
-Single test — pass a path/pattern through to Jest, keeping `TEST_TYPE`:
+Single test — pass a path/pattern through to Vitest, keeping `TEST_TYPE`:
 
 ```bash
 cd apps/backend && <pm> run test:unit -- src/modules/foo/__tests__/service.unit.spec.ts
