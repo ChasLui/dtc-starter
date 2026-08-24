@@ -2,7 +2,7 @@
 
 ## Overview
 
-Medusa DTC Starter — a Turborepo workspace monorepo containing a Medusa backend (`@medusajs/medusa` latest, Node 20+, PostgreSQL 15+) and an optional storefront (TanStack Start).
+Medusa DTC Starter — a bun workspace monorepo containing a Medusa backend (`@medusajs/medusa` latest, Node 20+, PostgreSQL 15+) and an optional storefront (TanStack Start on Vite 8 + Rolldown).
 
 ## Directory Structure
 
@@ -23,7 +23,6 @@ Medusa DTC Starter — a Turborepo workspace monorepo containing a Medusa backen
 │   │       └── workflows/        # Workflows and workflow steps
 │   └── storefront/               # OPTIONAL storefront
 ├── eslint.config.ts              # Root ESLint: @medusajs/eslint-plugin recommended
-├── turbo.json                    # Task graph: build, dev, start, lint, test, seed
 ```
 
 **`apps/storefront` is optional and may not exist.** It is skipped when the user chooses not to install it. Before running any storefront command, referencing storefront files, or assuming a full-stack change is possible, check that `apps/storefront/` exists. If it doesn't, the project is backend-only — do not scaffold it or suggest it was deleted by mistake.
@@ -46,7 +45,7 @@ Use that manager for every command and never introduce a second lockfile. Below,
 
 ## Commands
 
-Run from the repo root unless noted. Turbo skips missing apps automatically.
+Run from the repo root unless noted. There is no task runner: root scripts delegate to each app's own scripts via `bun run --cwd apps/<app> <script>`, and `dev`/`start` run both apps concurrently through `concurrently`. Commands against the storefront fail if `apps/storefront` is missing.
 
 ### Development
 
@@ -60,13 +59,13 @@ Run from the repo root unless noted. Turbo skips missing apps automatically.
 
 ```bash
 <pm> run build              # all apps
-<pm> run start              # build (via turbo dependsOn) then start
+<pm> run start              # build, then start both apps
 ```
 
 ### Lint
 
 ```bash
-<pm> run lint                          # all apps via turbo
+<pm> run lint                          # lint both apps
 cd apps/backend && <pm> run lint       # medusa lint
 cd apps/storefront && <pm> run lint    # eslint
 ```
@@ -74,7 +73,7 @@ cd apps/storefront && <pm> run lint    # eslint
 ### Test (backend only; the storefront has no test suite)
 
 ```bash
-<pm> run test                                              # all test tasks via turbo
+<pm> run test                                              # backend test suites (integration needs PostgreSQL)
 cd apps/backend && <pm> run test:unit                      # **/src/**/__tests__/**/*.unit.spec.ts
 cd apps/backend && <pm> run test:integration:modules       # **/src/modules/*/__tests__/**
 cd apps/backend && <pm> run test:integration:http          # **/integration-tests/http/*.spec.ts
@@ -132,7 +131,7 @@ claude mcp add --transport http medusa https://docs.medusajs.com/mcp # or agent 
 
 - **Backend routing is file-based.** A store endpoint is `src/api/store/<path>/route.ts` exporting `GET`/`POST`/etc. Don't add a router or register routes manually.
 - **Business logic belongs in workflows**, not in route handlers. Routes resolve and run a workflow; workflows compose steps.
-- Adding a task to `turbo.json` requires declaring its `outputs`, or Turbo will cache nothing/the wrong thing.
+- Root `package.json` scripts delegate to app scripts with `bun run --cwd apps/<app> <script>`; to add a root task, wire the same script into each app that should run it.
 
 ## Common Mistakes
 
@@ -147,7 +146,7 @@ claude mcp add --transport http medusa https://docs.medusajs.com/mcp # or agent 
 
 ## Off-Limits
 
-- `apps/backend/.medusa/`, `.next/`, `.output/`, `dist/`, `out/`, `.turbo/` — build output, excluded from the workspace and regenerated.
+- `apps/backend/.medusa/`, `.next/`, `.output/`, `dist/`, `out/` — build output, excluded from the workspace and regenerated.
 - The lockfile (`bun.lock`, `pnpm-lock.yaml`, `yarn.lock`, `package-lock.json` — whichever this install produced) — never hand-edit or delete; change it only as a side effect of a package manager command.
 - `.env` / `.env.local` — never commit, print, or copy secret values out of them. Edit `.env.template` instead when documenting a new variable.
 - Existing migrations in `src/modules/*/migrations/` — add a new migration rather than rewriting one that may already have run.

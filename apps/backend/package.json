@@ -38,6 +38,7 @@
   },
   "devDependencies": {
     "@medusajs/test-utils": "2.19.0",
+    "@medusajs/utils": "2.19.0",
     "@swc/core": "^1.7.28",
     "@swc/jest": "^0.2.36",
     "@types/jest": "^29.5.13",

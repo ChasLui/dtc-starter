@@ -9,14 +9,23 @@
     "apps/*"
   ],
   "scripts": {
-    "dev": "turbo dev",
-    "build": "turbo build",
-    "start": "turbo start",
-    "lint": "turbo lint",
-    "test": "turbo test",
-    "backend:seed": "turbo seed --filter=@dtc/backend",
-    "backend:dev": "turbo dev --filter=@dtc/backend",
-    "storefront:dev": "turbo dev --filter=@dtc/storefront"
+    "dev": "concurrently -k -n backend,storefront -c blue,magenta \"bun run backend:dev\" \"bun run storefront:dev\"",
+    "backend:dev": "bun run --cwd apps/backend dev",
+    "storefront:dev": "bun run --cwd apps/storefront dev",
+    "build": "bun run build:backend && bun run build:storefront",
+    "build:backend": "bun run --cwd apps/backend build",
+    "build:storefront": "bun run --cwd apps/storefront build",
+    "start": "bun run build && concurrently -k -n backend,storefront -c blue,magenta \"bun run start:backend\" \"bun run start:storefront\"",
+    "start:backend": "bun run --cwd apps/backend start",
+    "start:storefront": "bun run --cwd apps/storefront start",
+    "lint": "bun run lint:backend && bun run lint:storefront",
+    "lint:backend": "bun run --cwd apps/backend lint",
+    "lint:storefront": "bun run --cwd apps/storefront lint",
+    "test": "bun run test:unit && bun run test:integration:modules && bun run test:integration:http",
+    "test:unit": "bun run --cwd apps/backend test:unit --passWithNoTests",
+    "test:integration:modules": "bun run --cwd apps/backend test:integration:modules --passWithNoTests",
+    "test:integration:http": "bun run --cwd apps/backend test:integration:http --passWithNoTests",
+    "backend:seed": "bun run --cwd apps/backend medusa exec ./src/migration-scripts/initial-data-seed.ts"
   },
   "overrides": {
     "@types/react": "19.0.5",
@@ -24,9 +33,9 @@
   },
   "devDependencies": {
     "@medusajs/eslint-plugin": "2.19.0",
+    "concurrently": "^9.1.2",
     "eslint": "^9.39.4",
     "jiti": "^2.7.0",
-    "prettier": "^3.2.5",
-    "turbo": "^2.0.14"
+    "prettier": "^3.2.5"
   }
 }
